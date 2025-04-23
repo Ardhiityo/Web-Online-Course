@@ -9,6 +9,12 @@ class Pricing extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'name',
+        'price',
+        'duration',
+    ];
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);

@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CourseSection extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'course_id',
+        'position'
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);

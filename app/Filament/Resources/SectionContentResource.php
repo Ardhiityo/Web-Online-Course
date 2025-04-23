@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SectionContentResource\Pages;
-use App\Filament\Resources\SectionContentResource\RelationManagers;
 use App\Models\SectionContent;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,9 +25,9 @@ class SectionContentResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('course_section_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('course_section_id')
+                    ->relationship('courseSection', 'name')
+                    ->required(),
                 Forms\Components\Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
@@ -41,21 +40,10 @@ class SectionContentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('course_section_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('courseSection.name')
+                ->label('Course Section')
+                    ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CourseStudent extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = [
+        'course_id',
+        'user_id',
+        'is_active'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

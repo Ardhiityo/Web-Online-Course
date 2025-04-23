@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CourseMentorResource\Pages;
-use App\Filament\Resources\CourseMentorResource\RelationManagers;
 use App\Models\CourseMentor;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,12 +22,12 @@ class CourseMentorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('course_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('course_id')
+                    ->relationship('course', 'name')
+                    ->required(),
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
                 Forms\Components\Textarea::make('about')
@@ -41,26 +40,14 @@ class CourseMentorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('course.name')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->boolean()
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

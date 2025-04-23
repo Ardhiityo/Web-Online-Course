@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PricingResource\Pages;
-use App\Filament\Resources\PricingResource\RelationManagers;
 use App\Models\Pricing;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -28,11 +27,12 @@ class PricingResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('duration')
                     ->required()
+                    ->prefix('Month')
                     ->numeric(),
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('IDR'),
             ]);
     }
 
@@ -47,19 +47,7 @@ class PricingResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

@@ -9,6 +9,15 @@ class Course extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'name',
+        'slug',
+        'thumbnail',
+        'about',
+        'category_id',
+        'is_popular'
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

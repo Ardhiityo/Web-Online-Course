@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransactionResource\Pages;
-use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Transaction;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,12 +25,12 @@ class TransactionResource extends Resource
                 Forms\Components\TextInput::make('booking_trx_id')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('pricing_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->required(),
+                Forms\Components\Select::make('pricing_id')
+                    ->relationship('pricing', 'name')
+                    ->required(),
                 Forms\Components\TextInput::make('sub_total_amount')
                     ->required()
                     ->numeric(),
@@ -41,15 +40,19 @@ class TransactionResource extends Resource
                 Forms\Components\TextInput::make('total_tax_amount')
                     ->required()
                     ->numeric(),
-                Forms\Components\Toggle::make('is_paid')
-                    ->required(),
                 Forms\Components\TextInput::make('payment_type')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('proof')
-                    ->maxLength(255),
+                Forms\Components\FileUpload::make('proof')
+                    ->directory('proofs')
+                    ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('started_at')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('ended_at'),
+                    ->required()
+                    ->default(now()),
+                Forms\Components\DateTimePicker::make('ended_at')
+                    ->required()
+                    ->default(now()),
+                Forms\Components\Toggle::make('is_paid')
+                        ->required(),
             ]);
     }
 

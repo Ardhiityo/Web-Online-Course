@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CourseMentor extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = [
+        'user_id',
+        'course_id',
+        'is_active',
+        'about'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
