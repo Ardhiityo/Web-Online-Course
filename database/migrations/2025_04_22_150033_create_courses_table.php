@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->string('thumbnail');
+            $table->text('about');
+            $table->foreignId('category_id')
+                ->constrained()->onDelete('cascade');
+            $table->boolean('is_popular');
             $table->timestamps();
         });
     }

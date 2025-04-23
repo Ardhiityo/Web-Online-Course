@@ -13,6 +13,19 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('booking_trx_id')->unique();
+            $table->foreignId('user_id')
+                ->constrained()->onDelete('cascade');
+            $table->foreignId('pricing_id')->constrained()
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('sub_total_amount');
+            $table->unsignedBigInteger('grand_total_amount');
+            $table->integer('total_tax_amount');
+            $table->boolean('is_paid')->default(false);
+            $table->string('payment_type')->nullable();
+            $table->string('proof')->nullable();
+            $table->dateTime('started_at');
+            $table->dateTime('ended_at')->nullable();
             $table->timestamps();
         });
     }
