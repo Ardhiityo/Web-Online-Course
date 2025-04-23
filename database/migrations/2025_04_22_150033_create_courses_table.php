@@ -21,6 +21,7 @@ return new class extends Migration
                 ->constrained()->onDelete('cascade');
             $table->boolean('is_popular');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

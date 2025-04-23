@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('duration');
             $table->unsignedBigInteger('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
