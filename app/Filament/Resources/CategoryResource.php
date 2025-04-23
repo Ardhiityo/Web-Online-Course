@@ -23,14 +23,9 @@ class CategoryResource extends Resource
     {
         return $form->schema([
             Forms\Components\TextInput::make('name')
-                ->debounce(2000)
-                ->afterStateUpdated(function ($state, callable $set) {
-                    $set('slug', str($state)->slug());
-                })
                 ->required()
                 ->unique()
                 ->maxLength(255),
-            Forms\Components\TextInput::make('slug')->unique()->readOnly()->required()->maxLength(255),
             Forms\Components\FileUpload::make('photo')->image()->directory('categories')->columnSpanFull()->maxSize(5000)->required(),
         ]);
     }
@@ -38,7 +33,12 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([Tables\Columns\TextColumn::make('name')->searchable(), Tables\Columns\TextColumn::make('slug')->searchable(), Tables\Columns\ImageColumn::make('photo')->circular(), Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true), Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true)])
+            ->columns([
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\ImageColumn::make('photo')->circular(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true)
+            ])
             ->filters([Tables\Filters\TrashedFilter::make()])
             ->actions([Tables\Actions\EditAction::make()])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make(), Tables\Actions\ForceDeleteBulkAction::make(), Tables\Actions\RestoreBulkAction::make()])]);
@@ -47,8 +47,8 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //
-            ];
+            //
+        ];
     }
 
     public static function getPages(): array

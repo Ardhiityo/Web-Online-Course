@@ -5,7 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CourseResource\Pages;
 use App\Models\Course;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,52 +26,63 @@ class CourseResource extends Resource
         return $form->schema([
             Forms\Components\TextInput::make('name')
                 ->unique(ignoreRecord: true)
-                ->debounce(2000)
-                ->afterStateUpdated(function ($state, callable $set) {
-                    $set('slug', str()->slug($state));
-                })
-                ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make('slug')
-                ->required()->readOnly()->maxLength(255),
             Forms\Components\Select::make('category_id')
                 ->relationship('category', 'name')->required(),
-            Forms\Components\Textarea::make('about')
-                ->required()->columnSpanFull(),
-            Forms\Components\FileUpload::make('thumbnail')
-                ->required()->directory('courses')->image()->maxSize(5000)->columnSpanFull(),
-            Forms\Components\Toggle::make('is_popular')->required(),
-            Repeater::make('courseBenefits')
-                ->relationship()
+            Forms\Components\Textarea::make('about')->required()->columnSpanFull(),
+            Forms\Components\FileUpload::make('thumbnail')->required()->directory('courses')->image()->maxSize(5000)->columnSpanFull(),
+            Forms\Components\Toggle::make('is_popular'),
+
+            Fieldset::make('Details')
                 ->schema([
-                    Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->unique(ignoreRecord: true),
-                ])->columns(2)->columnSpanFull(),
-            Repeater::make('courseSections')
-                ->relationship()
-                ->schema([
-                    Forms\Components\TextInput::make('name')->required()->maxLength(255)->unique(),
-                    Forms\Components\Textarea::make('position')->columnSpanFull(),
-                ])->columns(2)->columnSpanFull(),
+                    Repeater::make('courseBenefits')
+                        ->relationship()
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->maxLength(255)->unique(ignoreRecord: true)
+                        ])
+                        ->columns(2)
+                        ->columnSpanFull(),
+                    Repeater::make('courseSections')
+                        ->relationship()
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->maxLength(255)->unique(),
+                            Forms\Components\TextInput::make('position')
+                                ->numeric()
+                        ])
+                        ->columns(2)
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([Tables\Columns\TextColumn::make('name')->searchable(), Tables\Columns\TextColumn::make('slug')->searchable(), Tables\Columns\ImageColumn::make('thumbnail')->circular(), Tables\Columns\TextColumn::make('category.name')->searchable()->sortable(), Tables\Columns\IconColumn::make('is_popular')->boolean()])
+            ->columns([
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('slug')->searchable(),
+                Tables\Columns\ImageColumn::make('thumbnail')->circular(),
+                Tables\Columns\TextColumn::make('category.name')->searchable()->sortable(),
+                Tables\Columns\IconColumn::make('is_popular')->boolean()
+            ])
             ->filters([Tables\Filters\TrashedFilter::make()])
             ->actions([Tables\Actions\EditAction::make()])
-            ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make(), Tables\Actions\ForceDeleteBulkAction::make(), Tables\Actions\RestoreBulkAction::make()])]);
+            ->bulkActions([Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\ForceDeleteBulkAction::make(),
+                Tables\Actions\RestoreBulkAction::make()
+            ])]);
     }
 
     public static function getRelations(): array
     {
         return [
-                //
-            ];
+            //
+        ];
     }
 
     public static function getPages(): array

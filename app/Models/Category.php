@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Course;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Category extends Model
 {
@@ -14,6 +17,16 @@ class Category extends Model
         'slug',
         'photo',
     ];
+
+    protected function name()
+    {
+        return Attribute::make(
+            set: fn($value) => [
+                'name' => $value,
+                'slug' => Str::slug($value),
+            ],
+        );
+    }
 
     public function courses()
     {
