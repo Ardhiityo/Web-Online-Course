@@ -18,7 +18,7 @@ class Category extends Model
         'photo',
     ];
 
-    protected function name()
+    protected function name(): Attribute
     {
         return Attribute::make(
             set: fn($value) => [

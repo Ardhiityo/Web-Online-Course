@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CourseResource\Pages;
+use App\Filament\Resources\CourseResource\RelationManagers\CourseSectionsRelationManager;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
@@ -40,18 +41,8 @@ class CourseResource extends Resource
                         ->schema([
                             Forms\Components\TextInput::make('name')
                                 ->required()
+                                ->columnSpanFull()
                                 ->maxLength(255)->unique(ignoreRecord: true)
-                        ])
-                        ->columns(2)
-                        ->columnSpanFull(),
-                    Repeater::make('courseSections')
-                        ->relationship()
-                        ->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->required()
-                                ->maxLength(255)->unique(),
-                            Forms\Components\TextInput::make('position')
-                                ->numeric()
                         ])
                         ->columns(2)
                         ->columnSpanFull(),
@@ -64,7 +55,6 @@ class CourseResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('slug')->searchable(),
                 Tables\Columns\ImageColumn::make('thumbnail')->circular(),
                 Tables\Columns\TextColumn::make('category.name')->searchable()->sortable(),
                 Tables\Columns\IconColumn::make('is_popular')->boolean()
@@ -81,7 +71,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CourseSectionsRelationManager::class
         ];
     }
 

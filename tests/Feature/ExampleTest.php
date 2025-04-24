@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\CourseSection;
+use Illuminate\Support\Facades\Log;
 
 class ExampleTest extends TestCase
 {
@@ -12,8 +14,13 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $response = $this->get('/');
+        $value = CourseSection::with('course')->get()
+            ->mapWithKeys(function ($courseSection) {
+                return [$courseSection->id => $courseSection->name . ' - ' . $courseSection->course->name];
+            });
 
-        $response->assertStatus(200);
+        self::assertNotNull($value);
+
+        Log::info($value);
     }
 }

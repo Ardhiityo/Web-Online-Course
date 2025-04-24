@@ -2,15 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CourseMentorResource\Pages;
-use App\Models\CourseMentor;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\CourseMentor;
+use Filament\Resources\Resource;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CourseMentorResource\Pages;
 
 class CourseMentorResource extends Resource
 {
@@ -26,7 +28,10 @@ class CourseMentorResource extends Resource
                     ->relationship('course', 'name')
                     ->required(),
                 Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
+                    ->options(
+                        User::role('mentor')->pluck('name', 'id')
+                    )
+                    ->label('Mentor')
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
@@ -45,6 +50,7 @@ class CourseMentorResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
+                    ->label('Mentor')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean()

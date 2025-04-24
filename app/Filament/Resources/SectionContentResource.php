@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SectionContentResource\Pages;
+use App\Models\CourseSection;
 use App\Models\SectionContent;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,9 +27,16 @@ class SectionContentResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('course_section_id')
-                    ->relationship('courseSection', 'name')
+                    ->options(
+                        CourseSection::with('course')->get()
+                            ->mapWithKeys(function ($courseSection) {
+                                return [$courseSection->id => $courseSection->name . ' - ' . $courseSection->course->name];
+                            })
+                    )
+                    ->searchable()
+                    ->label('Course section')
                     ->required(),
-                Forms\Components\Textarea::make('content')
+                Forms\Components\RichEditor::make('content')
                     ->required()
                     ->columnSpanFull(),
             ]);
@@ -41,7 +49,12 @@ class SectionContentResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('courseSection.name')
-                ->label('Course Section')
+                    ->label('Course Section')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('courseSection.course.name')
+                    ->label('Course Section')
+                    ->label('Course')
                     ->searchable()
                     ->sortable()
             ])
