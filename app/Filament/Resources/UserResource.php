@@ -38,8 +38,8 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->columnSpanFull()
-                    ->required(fn (Page $livewire): bool => $livewire instanceof CreateUser) // Tambahkan ini: Wajib hanya saat create
-                    ->dehydrated(fn ($state) => filled($state)) // Tambahkan ini: Hanya simpan jika diisi (untuk update)
+                    ->required(fn(Page $livewire): bool => $livewire instanceof CreateUser) // Tambahkan ini: Wajib hanya saat create
+                    ->dehydrated(fn($state) => filled($state)) // Tambahkan ini: Hanya simpan jika diisi (untuk update)
                     ->minLength(8)
                     ->maxLength(20),
                 Forms\Components\FileUpload::make('photo')
@@ -57,7 +57,7 @@ class UserResource extends Resource
                     ->relationship('roles', 'name')
                     ->required()
                     ->label('Role')
-                ]);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -67,10 +67,6 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('photo')
-                    ->circular(),
-                Tables\Columns\TextColumn::make('occupation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')
                     ->searchable(),

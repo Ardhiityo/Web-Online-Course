@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Ramsey\Uuid\Uuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Transaction extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasUuids;
 
     protected $fillable = [
         'user_id',
@@ -22,6 +24,23 @@ class Transaction extends Model
         'started_at',
         'ended_at'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_paid' => 'bool'
+        ];
+    }
+
+    public function newUniqueId()
+    {
+        return (string) Uuid::uuid4();
+    }
+
+    public function uniqueIds()
+    {
+        return ['booking_trx_id'];
+    }
 
     public function user()
     {

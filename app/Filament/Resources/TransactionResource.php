@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Filament\Tables;
 use App\Models\Pricing;
 use Filament\Forms\Get;
@@ -12,14 +13,17 @@ use Filament\Tables\Table;
 use App\Models\Transaction;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
-use Illuminate\Support\Facades\Log;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\ToggleButtons;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TransactionResource\Pages;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 
 class TransactionResource extends Resource
 {
@@ -31,7 +35,6 @@ class TransactionResource extends Resource
     {
         return $form
             ->schema([
-                //Wizard masukan ke notion
                 Wizard::make([
                     Wizard\Step::make('Order')
                         ->schema([
@@ -62,6 +65,12 @@ class TransactionResource extends Resource
                                                 $set('grand_total_amount', $sub_total_amount);
                                                 $set('started_at', "");
                                                 $set('ended_at', "");
+                                            }
+                                        })
+                                        ->afterStateHydrated(function ($state, Set $set) {
+                                            $pricing = Pricing::find($state);
+                                            if ($pricing) {
+                                                $set('duration', $pricing->duration);
                                             }
                                         }),
                                     TextInput::make('duration')
@@ -107,7 +116,67 @@ class TransactionResource extends Resource
                                         ->required()
                                 ])
                         ]),
-                    // ...
+
+                    Wizard\Step::make('Student information')
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    Select::make('user_id')
+                                        ->label('Email')
+                                        ->options(
+                                            User::role('student')->pluck('email', 'id')
+                                        )
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, Get $get, Set $set) {
+                                            $user = User::find($state);
+                                            if ($user) {
+                                                $set('name', $user->name);
+                                            }
+                                        })
+                                        ->afterStateHydrated(function ($state, Set $set) {
+                                            $user = User::find($state);
+                                            if ($user) {
+                                                $set('name', $user->name);
+                                            }
+                                        }),
+                                    TextInput::make('name')
+                                        ->readOnly()
+                                ])
+                        ]),
+
+                    Wizard\Step::make('Payment information')
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    ToggleButtons::make('is_paid')
+                                        ->label('Status')
+                                        ->options([
+                                            true => 'Paid',
+                                            false => 'Unpaid'
+                                        ])
+                                        ->icons([
+                                            true => 'heroicon-o-check-circle',
+                                            false => 'heroicon-o-clock',
+                                        ])
+                                        ->required(),
+                                    ToggleButtons::make('payment_type')
+                                        ->options([
+                                            'midtrans' => 'Midtrans',
+                                            'manual' => 'Manual'
+                                        ])
+                                        ->icons([
+                                            'midtrans' => 'heroicon-o-credit-card',
+                                            'manual' => 'heroicon-o-banknotes',
+                                        ])
+                                        ->required(),
+                                ]),
+                            FileUpload::make('proof')
+                                ->image()
+                                ->directory('transactions')
+                                ->maxSize(5000)
+                                ->columnSpanFull()
+                                ->required()
+                        ]),
                 ])->columnSpanFull()
             ]);
     }
@@ -116,7 +185,12 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('booking_trx_id')
+                    ->label('Booking code')
+                    ->searchable(),
+                TextColumn::make('user.email')->label('Email')
+                    ->searchable(),
+                IconColumn::make('is_paid')->label('Status')->boolean()
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
