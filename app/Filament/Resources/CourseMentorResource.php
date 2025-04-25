@@ -17,7 +17,7 @@ use App\Filament\Resources\CourseMentorResource\Pages;
 class CourseMentorResource extends Resource
 {
     protected static ?string $model = CourseMentor::class;
-
+    protected static ?string $navigationGroup = 'Comunity';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

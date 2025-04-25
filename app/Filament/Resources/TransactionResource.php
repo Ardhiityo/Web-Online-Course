@@ -13,24 +13,27 @@ use Filament\Tables\Table;
 use App\Models\Transaction;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\ToggleButtons;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TransactionResource\Pages;
-use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Notifications\Notification;
 
 class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $navigationGroup = 'Payments';
     public static function form(Form $form): Form
     {
         return $form
@@ -78,7 +81,6 @@ class TransactionResource extends Resource
                                         ->readOnly()
                                         ->prefix('Month')
                                 ]),
-                            //Grid masukan ke notion
                             Grid::make(3)->schema([
                                 TextInput::make('total_tax_amount')
                                     ->required()
@@ -190,6 +192,8 @@ class TransactionResource extends Resource
                     ->searchable(),
                 TextColumn::make('user.email')->label('Email')
                     ->searchable(),
+                TextColumn::make('pricing.name')
+                    ->searchable(),
                 IconColumn::make('is_paid')->label('Status')->boolean()
             ])
             ->filters([
@@ -197,6 +201,17 @@ class TransactionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('Approved')->action(function (Model $record) {
+                    $record->is_paid = true;
+                    $record->update();
+
+                    Notification::make()
+                        ->success()
+                        ->title('Status')
+                        ->body('Status has been updated')
+                        ->send();
+                    return redirect()->back();
+                })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

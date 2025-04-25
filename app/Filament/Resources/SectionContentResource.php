@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SectionContentResource extends Resource
 {
     protected static ?string $model = SectionContent::class;
-
+    protected static ?string $navigationGroup = 'Materials';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
