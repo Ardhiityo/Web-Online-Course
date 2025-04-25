@@ -2,15 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TransactionResource\Pages;
-use App\Models\Transaction;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Carbon\Carbon;
 use Filament\Tables;
+use App\Models\Pricing;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Transaction;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Illuminate\Support\Facades\Log;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\TransactionResource\Pages;
 
 class TransactionResource extends Resource
 {
@@ -22,37 +31,84 @@ class TransactionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('booking_trx_id')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\Select::make('pricing_id')
-                    ->relationship('pricing', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('sub_total_amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('grand_total_amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('total_tax_amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('payment_type')
-                    ->maxLength(255),
-                Forms\Components\FileUpload::make('proof')
-                    ->directory('proofs')
-                    ->columnSpanFull(),
-                Forms\Components\DateTimePicker::make('started_at')
-                    ->required()
-                    ->default(now()),
-                Forms\Components\DateTimePicker::make('ended_at')
-                    ->required()
-                    ->default(now()),
-                Forms\Components\Toggle::make('is_paid')
-                        ->required(),
+                //Wizard masukan ke notion
+                Wizard::make([
+                    Wizard\Step::make('Order')
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    Select::make('pricing_id')
+                                        ->relationship('pricing', 'name')
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                                            $pricing = Pricing::find($state);
+                                            if ($pricing) {
+                                                $duration = $pricing->duration;
+                                                $set('duration', $duration);
+                                                $tax = $pricing->price * 0.11;
+                                                $set('total_tax_amount', $tax);
+                                                $sub_total_amount = $pricing->price + $tax;
+                                                $set('sub_total_amount', $sub_total_amount);
+                                                $set('grand_total_amount', $sub_total_amount);
+                                                $started_at = $get('started_at');
+                                                if ($started_at) {
+                                                    $set('ended_at', Carbon::parse($started_at)->addMonths($duration)->format('Y-m-d'));
+                                                }
+                                            } else {
+                                                $set('duration', "");
+                                                $set('total_tax_amount', "");
+                                                $sub_total_amount = "";
+                                                $set('sub_total_amount', $sub_total_amount);
+                                                $set('grand_total_amount', $sub_total_amount);
+                                                $set('started_at', "");
+                                                $set('ended_at', "");
+                                            }
+                                        }),
+                                    TextInput::make('duration')
+                                        ->numeric()
+                                        ->readOnly()
+                                        ->prefix('Month')
+                                ]),
+                            //Grid masukan ke notion
+                            Grid::make(3)->schema([
+                                TextInput::make('total_tax_amount')
+                                    ->required()
+                                    ->prefix('IDR')
+                                    ->readOnly(),
+                                TextInput::make('sub_total_amount')
+                                    ->required()
+                                    ->prefix('IDR')
+                                    ->readOnly(),
+                                TextInput::make('grand_total_amount')
+                                    ->required()
+                                    ->prefix('IDR')
+                                    ->readOnly()
+                            ]),
+                            Grid::make(2)
+                                ->schema([
+                                    DatePicker::make('started_at')
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                                            if (!$state) return;
+
+                                            $duration = $get('duration');
+                                            if (!$duration) return;
+
+                                            $set(
+                                                'ended_at',
+                                                Carbon::parse($state)
+                                                    ->addMonths($duration)
+                                                    ->format('Y-m-d')
+                                            );
+                                        })
+                                        ->required(),
+                                    DatePicker::make('ended_at')
+                                        ->readOnly()
+                                        ->required()
+                                ])
+                        ]),
+                    // ...
+                ])->columnSpanFull()
             ]);
     }
 
@@ -60,47 +116,7 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('booking_trx_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('pricing_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('sub_total_amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('grand_total_amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('total_tax_amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_paid')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('payment_type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('proof')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('started_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ended_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                //
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

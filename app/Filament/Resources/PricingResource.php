@@ -46,7 +46,7 @@ class PricingResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money()
+                    ->money('IDR')
                     ->sortable()
             ])
             ->filters([
