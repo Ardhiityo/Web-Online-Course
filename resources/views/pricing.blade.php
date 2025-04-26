@@ -5,7 +5,7 @@
         <section id="pricing" class="flex flex-col items-center gap-[33px] mt-[50px]">
             <div class="flex flex-col items-center gap-[10px] max-w-[500px] w-full">
                 <p class="flex items-center gap-[6px] w-fit rounded-full py-2 px-[14px] bg-obito-light-green">
-                    <img src="assets/images/icons/crown-green.svg" class="flex w-5 shrink-0" alt="icon">
+                    <img src="{{ asset('app/assets/images/icons/crown-green.svg') }}" class="flex w-5 shrink-0" alt="icon">
                     <span class="text-sm font-bold">UNLOCK PRO JOURNEY</span>
                 </p>
                 <h1 class="font-bold text-[28px] leading-[42px] text-center">Pricing For Everyone</h1>
@@ -85,7 +85,7 @@
                             </p>
                         </div>
                         <hr class="border-obito-grey">
-                        <a href="checkout.html"
+                        <a href="{{ route('checkout') }}"
                             class="w-full h-11 rounded-full py-[10px] px-5 gap-[10px] bg-obito-green text-center hover:drop-shadow-effect transition-all duration-300">
                             <span class="font-semibold text-white">Get Pro</span>
                         </a>

@@ -15,4 +15,9 @@ class HomeController extends Controller
     {
         return view("pricing");
     }
+
+    public function checkout()
+    {
+        return view("checkout");
+    }
 }

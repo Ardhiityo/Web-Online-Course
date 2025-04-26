@@ -9,7 +9,7 @@
                     <a href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="transition-all duration-300 hover:font-semibold">
-                    <a href="pricing.html">Pricing</a>
+                    <a href="{{ route('pricing') }}">Pricing</a>
                 </li>
                 <li class="transition-all duration-300 hover:font-semibold">
                     <a href="#">Features</a>
@@ -20,7 +20,7 @@
             </ul>
         </div>
         <div class="flex gap-5 justify-end items-center">
-            <a href="#" class="flex shrink-0">
+            <a href="{{ route('pricing') }}" class="flex shrink-0">
                 <img src="{{ asset('app/assets/images/icons/device-message.svg') }}" class="flex shrink-0"
                     alt="icon">
             </a>

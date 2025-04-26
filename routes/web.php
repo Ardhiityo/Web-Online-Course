@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
