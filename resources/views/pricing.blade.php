@@ -12,98 +12,111 @@
                 <p class="leading-[28px] text-obito-text-secondary text-center">Harga yang kami tetapkan tergolong murah
                     namun mentor tetap memberikan kualitas standard internasional</p>
             </div>
+            {{-- Pricing list --}}
             <div class="flex gap-5 items-center">
-                <div
-                    class="price-card-reguler flex flex-col h-fit w-full max-w-[314px] shrink-0 rounded-[20px] p-5 border border-obito-grey gap-5 bg-white">
-                    <div class="flex items-center gap-[14px]">
-                        <img src="{{ asset('app/assets/images/icons/award-black-fill.svg') }}"
-                            class="flex w-[60px] shrink-0" alt="icon">
-                        <h2 class="font-bold text-[22px] leading-[33px]">Beasiswa</h2>
-                    </div>
-                    <div class="price">
-                        <p class="font-bold text-[32px] leading-[48px]">Rp 0</p>
-                        <p class="mt-[6px] text-obito-text-secondary">3 months duration</p>
-                    </div>
-                    <hr class="border-obito-grey">
-                    <div class="flex flex-col gap-4">
-                        <p class="flex gap-2 items-center">
-                            <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
-                                class="flex shrink-0" alt="icon">
-                            <span class="font-semibold">Access 100+ Online Courses</span>
-                        </p>
-                        <p class="flex gap-2 items-center">
-                            <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
-                                class="flex shrink-0" alt="icon">
-                            <span class="font-semibold">Get Premium Certifications</span>
-                        </p>
-                    </div>
-                    <hr class="border-obito-grey">
-                    <a class="w-full h-11 rounded-full pt-[10px] px-5 gap-[10px] bg-obito-grey text-center">
-                        <span class="font-semibold text-obito-text-grey">Sold Out</span>
-                    </a>
-                </div>
-                <div
-                    class="price-card-popular flex flex-col h-fit w-full max-w-[314px] shrink-0 rounded-[20px] border-2 border-obito-green gap-5 bg-white overflow-hidden">
-                    <p class="popular-badge text-center font-semibold text-white py-[6px] bg-obito-green">Most Popular
-                        Package</p>
-                    <div class="flex flex-col gap-5 p-5 pt-0">
-                        <div class="flex items-center gap-[14px]">
-                            <img src="{{ asset('app/assets/images/icons/cup-green-fill.svg') }}"
-                                class="flex w-[60px] shrink-0" alt="icon">
-                            <h2 class="font-bold text-[22px] leading-[33px]">Pro Talent</h2>
+                @foreach ($pricings as $pricing)
+                    @if ($loop->iteration == 1)
+                        <div
+                            class="price-card-reguler flex flex-col h-fit w-full max-w-[314px] shrink-0 rounded-[20px] p-5 border border-obito-grey gap-5 bg-white">
+                            <div class="flex items-center gap-[14px]">
+                                <img src="{{ asset('app/assets/images/icons/award-black-fill.svg') }}"
+                                    class="flex w-[60px] shrink-0" alt="icon">
+                                <h2 class="font-bold text-[22px] leading-[33px]">{{ $pricing->name }}</h2>
+                            </div>
+                            <div class="price">
+                                <p class="font-bold text-[32px] leading-[48px]">Rp
+                                    {{ number_format($pricing->price, thousands_separator: '.') }}</p>
+                                <p class="mt-[6px] text-obito-text-secondary">{{ $pricing->duration }} months duration</p>
+                            </div>
+                            <hr class="border-obito-grey">
+                            <div class="flex flex-col gap-4">
+                                <p class="flex gap-2 items-center">
+                                    <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
+                                        class="flex shrink-0" alt="icon">
+                                    <span class="font-semibold">Access 100+ Online Courses</span>
+                                </p>
+                                <p class="flex gap-2 items-center">
+                                    <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
+                                        class="flex shrink-0" alt="icon">
+                                    <span class="font-semibold">Get Premium Certifications</span>
+                                </p>
+                            </div>
+                            <hr class="border-obito-grey">
+                            <a class="w-full h-11 rounded-full pt-[10px] px-5 gap-[10px] bg-obito-grey text-center">
+                                <span class="font-semibold text-obito-text-grey">Sold Out</span>
+                            </a>
                         </div>
-                        <div class="price">
-                            <p class="font-bold text-[32px] leading-[48px]">Rp 1.899.000</p>
-                            <p class="mt-[6px] text-obito-text-secondary">3 months duration</p>
+                    @elseif ($loop->iteration == 2)
+                        <div
+                            class="price-card-popular flex flex-col h-fit w-full max-w-[314px] shrink-0 rounded-[20px] border-2 border-obito-green gap-5 bg-white overflow-hidden">
+                            <p class="popular-badge text-center font-semibold text-white py-[6px] bg-obito-green">Most
+                                Popular
+                                Package</p>
+                            <div class="flex flex-col gap-5 p-5 pt-0">
+                                <div class="flex items-center gap-[14px]">
+                                    <img src="{{ asset('app/assets/images/icons/cup-green-fill.svg') }}"
+                                        class="flex w-[60px] shrink-0" alt="icon">
+                                    <h2 class="font-bold text-[22px] leading-[33px]">{{ $pricing->name }}</h2>
+                                </div>
+                                <div class="price">
+                                    <p class="font-bold text-[32px] leading-[48px]">Rp
+                                        {{ number_format($pricing->price, thousands_separator: '.') }}
+                                    </p>
+                                    <p class="mt-[6px] text-obito-text-secondary">{{ $pricing->duration }} months duration
+                                    </p>
+                                </div>
+                                <hr class="border-obito-grey">
+                                <div class="flex flex-col gap-4">
+                                    <p class="flex gap-2 items-center">
+                                        <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
+                                            class="flex shrink-0" alt="icon">
+                                        <span class="font-semibold">Access 1500+ Online Courses</span>
+                                    </p>
+                                    <p class="flex gap-2 items-center">
+                                        <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
+                                            class="flex shrink-0" alt="icon">
+                                        <span class="font-semibold">Get Premium Certifications</span>
+                                    </p>
+                                    <p class="flex gap-2 items-center">
+                                        <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
+                                            class="flex shrink-0" alt="icon">
+                                        <span class="font-semibold">High Quality Work Portfolio</span>
+                                    </p>
+                                    <p class="flex gap-2 items-center">
+                                        <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
+                                            class="flex shrink-0" alt="icon">
+                                        <span class="font-semibold">Career Consultation 2025</span>
+                                    </p>
+                                    <p class="flex gap-2 items-center">
+                                        <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
+                                            class="flex shrink-0" alt="icon">
+                                        <span class="font-semibold">Support learning 24/7</span>
+                                    </p>
+                                </div>
+                                <hr class="border-obito-grey">
+                                <a href="{{ route('checkout', ['pricing' => $pricing]) }}"
+                                    class="w-full h-11 rounded-full py-[10px] px-5 gap-[10px] bg-obito-green text-center hover:drop-shadow-effect transition-all duration-300">
+                                    <span class="font-semibold text-white">Get Pro</span>
+                                </a>
+                            </div>
                         </div>
-                        <hr class="border-obito-grey">
-                        <div class="flex flex-col gap-4">
-                            <p class="flex gap-2 items-center">
-                                <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
-                                    class="flex shrink-0" alt="icon">
-                                <span class="font-semibold">Access 1500+ Online Courses</span>
-                            </p>
-                            <p class="flex gap-2 items-center">
-                                <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
-                                    class="flex shrink-0" alt="icon">
-                                <span class="font-semibold">Get Premium Certifications</span>
-                            </p>
-                            <p class="flex gap-2 items-center">
-                                <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
-                                    class="flex shrink-0" alt="icon">
-                                <span class="font-semibold">High Quality Work Portfolio</span>
-                            </p>
-                            <p class="flex gap-2 items-center">
-                                <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
-                                    class="flex shrink-0" alt="icon">
-                                <span class="font-semibold">Career Consultation 2025</span>
-                            </p>
-                            <p class="flex gap-2 items-center">
-                                <img src="{{ asset('app/assets/images/icons/tick-circle-green-fill.svg') }}"
-                                    class="flex shrink-0" alt="icon">
-                                <span class="font-semibold">Support learning 24/7</span>
-                            </p>
-                        </div>
-                        <hr class="border-obito-grey">
-                        <a href="{{ route('checkout') }}"
-                            class="w-full h-11 rounded-full py-[10px] px-5 gap-[10px] bg-obito-green text-center hover:drop-shadow-effect transition-all duration-300">
-                            <span class="font-semibold text-white">Get Pro</span>
-                        </a>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
                 <div
                     class="price-card-reguler flex flex-col h-fit w-full max-w-[314px] shrink-0 rounded-[20px] p-5 border border-obito-grey gap-5 bg-white">
                     <div class="flex items-center gap-[14px]">
                         <img src="{{ asset('app/assets/images/icons/buildings-green-fill.svg') }}"
                             class="flex w-[60px] shrink-0" alt="icon">
-                        <h2 class="font-bold text-[22px] leading-[33px]">Business</h2>
+                        <h2 class="font-bold text-[22px] leading-[33px]">{{ $pricing->name }}</h2>
                     </div>
                     <hr class="border-obito-grey">
                     <div class="price">
-                        <p class="font-bold text-lg leading-[27px]">Customizing easily without paying too much money</p>
+                        <p class="font-bold text-lg leading-[27px]">Customizing easily without paying too much money
+                        </p>
                     </div>
                     <div class="flex flex-col gap-4">
-                        <p class="leading-7 text-obito-text-secondary">Kami bantu siapkan materi ajar sesuai kebutuhan
+                        <p class="leading-7 text-obito-text-secondary">Kami bantu siapkan materi ajar sesuai
+                            kebutuhan
                             pertumbuhan perusahaan anda saat ini.</p>
                     </div>
                     <hr class="border-obito-grey">
@@ -113,6 +126,7 @@
                     </a>
                 </div>
             </div>
+            {{-- Pricing list --}}
         </section>
         <section id="testimonials" class="mt-[50px] w-full pb-[66px]">
             <div id="testimonial-slide" class="flex overflow-x-hidden flex-nowrap w-full">

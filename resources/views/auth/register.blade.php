@@ -19,7 +19,8 @@
                     <button id="delete-photo" type="button"
                         class="rounded-full w-fit py-[6px] px-[10px] bg-obito-light-red font-bold text-xs text-obito-red hidden">DELETE
                         PHOTO</button>
-                    <input id="hidden-input" type="file" accept="image/*" class="absolute opacity-0 -z-10">
+                    <input id="hidden-input" type="file" accept="image/*" class="absolute opacity-0 -z-10" name="photo"
+                        required>
                 </label>
                 <div class="flex flex-col gap-2">
                     <p>Complete Name</p>
@@ -36,7 +37,7 @@
                     <label class="relative group">
                         <input type="text"
                             class="appearance-none outline-none w-full rounded-full border border-obito-grey py-[14px] px-5 pl-12 font-semibold placeholder:font-normal placeholder:text-obito-text-secondary group-focus-within:border-obito-green transition-all duration-300"
-                            placeholder="Type your ocupation">
+                            placeholder="Type your occupation" name="occupation" required>
                         <img src="{{ asset('app/assets/images/icons/briefcase.svg') }}"
                             class="flex absolute left-5 top-1/2 transform -translate-y-1/2 size-5 shrink-0" alt="icon">
                     </label>
@@ -88,5 +89,5 @@
 
 @push('scripts')
     <script src="{{ asset('app/js/dropdown-navbar.js') }}"></script>
-    <script src="{{ asset('js/photo-upload.js') }}"></script>
+    <script src="{{ asset('app/js/photo-upload.js') }}"></script>
 @endpush

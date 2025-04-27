@@ -2,13 +2,20 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 
+Route::get('/checkout/success', [TransactionController::class, 'success'])->name('checkout.success');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout', [TransactionController::class, 'checkoutStore'])->name('checkout.store');
+    Route::get('/checkout/{pricing}', [TransactionController::class, 'checkout'])->name('checkout');
+    Route::get('/my-subscriptions', [SubscriptionController::class, 'mySubscription'])->name('my-subscription');
+    Route::get('/subscription-details', [SubscriptionController::class, 'subscriptionDetail'])->name('subscription-detail');
 });
 
 Route::get('/dashboard', function () {

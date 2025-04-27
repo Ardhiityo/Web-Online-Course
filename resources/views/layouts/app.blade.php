@@ -25,7 +25,7 @@
 <body>
     <x-navbar />
     @yield('content')
-    @stack('scripts')
+    @yield('scripts')
 </body>
 
 </html>
