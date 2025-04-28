@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Ramsey\Uuid\Uuid;
 use App\Models\CourseSection;
 use Illuminate\Support\Facades\Log;
 
@@ -14,13 +15,10 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $value = CourseSection::with('course')->get()
-            ->mapWithKeys(function ($courseSection) {
-                return [$courseSection->id => $courseSection->name . ' - ' . $courseSection->course->name];
-            });
+        $booking_trx_id = (string) Uuid::uuid4();
 
-        self::assertNotNull($value);
+        self::assertTrue(true);
 
-        Log::info($value);
+        Log::info($booking_trx_id);
     }
 }

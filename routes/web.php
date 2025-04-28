@@ -13,9 +13,9 @@ Route::get('/checkout/success', [TransactionController::class, 'success'])->name
 
 Route::middleware('auth')->group(function () {
     Route::post('/checkout', [TransactionController::class, 'checkoutStore'])->name('checkout.store');
+    Route::get('/checkout/my-subscriptions', [SubscriptionController::class, 'mySubscription'])->name('checkout.my-subscription');
+    Route::get('/checkout/subscription-details', [SubscriptionController::class, 'subscriptionDetail'])->name('checkout.subscription-detail');
     Route::get('/checkout/{pricing}', [TransactionController::class, 'checkout'])->name('checkout');
-    Route::get('/my-subscriptions', [SubscriptionController::class, 'mySubscription'])->name('my-subscription');
-    Route::get('/subscription-details', [SubscriptionController::class, 'subscriptionDetail'])->name('subscription-detail');
 });
 
 Route::get('/dashboard', function () {

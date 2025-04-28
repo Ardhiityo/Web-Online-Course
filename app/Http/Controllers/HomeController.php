@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Midtrans\Snap;
-use App\Models\Pricing;
-use App\Models\Transaction;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Interface\PricingService;
+use App\Services\PricingService;
 
 class HomeController extends Controller
 {
-    public function __construct(private PricingService $pricingService) {}
+    public function __construct() {}
 
     public function index()
     {
         return view("home");
     }
 
-    public function pricing()
+    public function pricing(PricingService $pricingService)
     {
-        $pricings = $this->pricingService->getAllPricing();
+        $pricings = $pricingService->getAllPricing();
 
         return view("pricing", compact("pricings"));
     }

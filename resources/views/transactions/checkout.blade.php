@@ -3,8 +3,7 @@
 @section('content')
     <main class="flex flex-1 justify-center items-center py-5">
         <div class="flex w-[1000px] !h-fit rounded-[20px] border border-obito-grey gap-[40px] bg-white items-center p-5">
-            <form id="checkout-details" class="flex flex-col gap-5 w-full" method="POST"
-                action="{{ route('checkout.store') }}">
+            <form id="checkout-details" class="flex flex-col gap-5 w-full">
                 @csrf
                 <h1 class="font-bold text-[22px] leading-[33px]">Checkout Pro</h1>
                 <input type="hidden" name="pricing_id" value="{{ $pricing->id }}">
@@ -152,4 +151,46 @@
 
 @section('scripts')
     <script src="{{ asset('app/js/dropdown-navbar.js') }}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
+    <script>
+        function handlePayment(data) {
+            snap.pay(data.snap_token, {
+                onSuccess: function(result) {
+                    window.location.href = '{{ route('checkout.success') }}'
+                },
+                onPending: function(result) {
+                    alert('Pembayaran pending');
+                },
+                onError: function(result) {
+                    alert('Pembayaran gagal');
+                }
+            });
+        }
+
+        $form = document.getElementById('checkout-details');
+        $form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            try {
+                const response = await fetch('{{ route('checkout.store') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _token: '{{ csrf_token() }}',
+                        pricing_id: '{{ $pricing->id }}',
+                    })
+                });
+
+                const data = await response.json();
+                handlePayment(data);
+            } catch (error) {
+                alert('Failed to checkout');
+                console.log(error);
+            }
+        })
+    </script>
 @endsection
