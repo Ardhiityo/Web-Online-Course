@@ -6,7 +6,6 @@ use Ramsey\Uuid\Uuid;
 use App\Models\Pricing;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionService
@@ -46,19 +45,19 @@ class TransactionService
                 ],
             ],
             'custom_field1' => $pricing->id,
+            'custom_field2' => $student->id,
         ];
     }
 
-    public function createTransaction(string $booking_trx_id, int $pricingId,)
+    public function createTransaction(string $booking_trx_id, int $pricingId, int $studentId)
     {
-        $student = Auth::user();
         $pricing = Pricing::find($pricingId);
         $sub_total_amount = $pricing->price;
         $tax = $pricing->price * 0.11;
         $grand_total_amount = $pricing->price + $tax;
 
         return Transaction::create([
-            'user_id' => $student->id,
+            'user_id' => $studentId,
             'booking_trx_id' => $booking_trx_id,
             'pricing_id' => $pricingId,
             'sub_total_amount' => $sub_total_amount,
@@ -88,13 +87,14 @@ class TransactionService
         $fraud_status = $request->fraud_status;
         $booking_trx_id = $request->order_id;
         $pricingId = (int)$request->custom_field1;
+        $studentId = (int)$request->custom_field2;
 
         if ($transaction === 'capture') {
             if ($fraud_status === 'accept') {
-                $this->createTransaction($booking_trx_id, $pricingId);
+                $this->createTransaction($booking_trx_id, $pricingId, $studentId);
             }
         } else if ($transaction === 'settlement') {
-            $this->createTransaction($booking_trx_id, $pricingId);
+            $this->createTransaction($booking_trx_id, $pricingId, $studentId);
         } else {
             return response()->json([
                 'message' => 'Invalid transaction status'
