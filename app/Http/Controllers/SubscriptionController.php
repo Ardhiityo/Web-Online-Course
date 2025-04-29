@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
-use Illuminate\Http\Request;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Auth;
 

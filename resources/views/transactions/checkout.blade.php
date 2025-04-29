@@ -157,7 +157,7 @@
         function handlePayment(data) {
             snap.pay(data.snap_token, {
                 onSuccess: function(result) {
-                    window.location.href = '{{ route('checkout.success') }}'
+                    window.location.href = `/checkout/success/${result.order_id}`;
                 },
                 onPending: function(result) {
                     alert('Pembayaran pending');

@@ -34,8 +34,11 @@ class TransactionController extends Controller
         return view("transactions.checkout", compact('pricing'));
     }
 
-    public function success()
+    public function success($orderId)
     {
-        return view('transactions.success-checkout');
+        $transaction = $this->transactionService->getTransactionByBookingTrxId($orderId);
+        if (is_null($transaction)) return abort(404);
+
+        return view('transactions.success-checkout', compact('transaction'));
     }
 }

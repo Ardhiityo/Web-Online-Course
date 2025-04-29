@@ -6,7 +6,9 @@ use Ramsey\Uuid\Uuid;
 use App\Models\Pricing;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class TransactionService
 {
@@ -75,6 +77,15 @@ class TransactionService
         ]);
     }
 
+    public function getTransactionByBookingTrxId(string $booking_trx_id)
+    {
+        $transaction = Transaction::with('pricing')
+            ->where('booking_trx_id', $booking_trx_id)
+            ->first();
+
+        return $transaction;
+    }
+
     public function createCallback(Request $request)
     {
         $hashedKey = hash(
@@ -88,17 +99,17 @@ class TransactionService
             ], 400);
         }
 
-        $transaction = $request->transaction_status;
+        $transaction_status = $request->transaction_status;
         $fraud_status = $request->fraud_status;
         $booking_trx_id = $request->order_id;
         $pricingId = (int)$request->custom_field1;
         $studentId = (int)$request->custom_field2;
 
-        if ($transaction === 'capture') {
+        if ($transaction_status === 'capture') {
             if ($fraud_status === 'accept') {
                 $this->createTransaction($booking_trx_id, $pricingId, $studentId);
             }
-        } else if ($transaction === 'settlement') {
+        } else if ($transaction_status === 'settlement') {
             $this->createTransaction($booking_trx_id, $pricingId, $studentId);
         } else {
             return response()->json([
