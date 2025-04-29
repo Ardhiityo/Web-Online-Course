@@ -3,11 +3,11 @@
 @section('content')
     <div id="path" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
         <div class="flex items-center w-full max-w-[1280px] px-[75px] mx-auto gap-5">
-            <a href="#" class="last-of-type:font-semibold">Dashboard</a>
+            <a href="{{ route('home') }}" class="last-of-type:font-semibold">Dashboard</a>
             <div class="w-px h-10 bg-obito-grey"></div>
-            <a href="my-subscriptions.html" class="last-of-type:font-semibold">My Subscriptions</a>
+            <a href="{{ route('checkout.my-subscription') }}" class="last-of-type:font-semibold">My Subscriptions</a>
             <span class="text-obito-grey">/</span>
-            <a href="#" class="last-of-type:font-semibold">Details Subscription</a>
+            <a href="{{ url()->current() }}" class="last-of-type:font-semibold">Details Subscription</a>
         </div>
     </div>
     <main class="flex flex-1 justify-center items-center py-5">
@@ -21,14 +21,17 @@
                                 class="size-[50px] shrink-0" />
                             <div class="desc flex flex-col gap-[3px]">
                                 <h3 class="text-sm leading-[21px] text-obito-text-secondary">Booking TRX ID</h3>
-                                <p class="font-semibold">OBITOBWA10930949</p>
+                                <p class="font-semibold">{{ $transaction->booking_trx_id }}</p>
                             </div>
                         </div>
                         <div class="status flex items-center gap-[14px]">
-                            <span
-                                class="font-bold text-xs text-obito-green badge w-fit rounded-full py-[6px] px-[10px] gap-[6px] bg-obito-light-green">ACTIVE</span>
-                            <span
-                                class="font-bold text-xs text-obito-red badge w-fit rounded-full py-[6px] px-[10px] gap-[6px] bg-obito-light-red">EXPIRED</span>
+                            @if ($transaction->ended_at > now())
+                                <span
+                                    class="font-bold text-xs text-obito-green badge w-fit rounded-full py-[6px] px-[10px] gap-[6px] bg-obito-light-green">ACTIVE</span>
+                            @else
+                                <span
+                                    class="font-bold text-xs text-obito-red badge w-fit rounded-full py-[6px] px-[10px] gap-[6px] bg-obito-light-red">EXPIRED</span>
+                            @endif
                         </div>
                     </div>
                 </section>
@@ -41,7 +44,8 @@
                                     class="size-5 shrink-0" />
                                 <p>Subscription Package</p>
                             </div>
-                            <strong class="font-semibold">Rp 1.899.000</strong>
+                            <strong class="font-semibold">Rp
+                                {{ number_format($transaction->sub_total_amount, thousands_separator: '.') }}</strong>
                         </div>
                         <div class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
@@ -49,7 +53,7 @@
                                     class="size-5 shrink-0" />
                                 <p>Access Duration</p>
                             </div>
-                            <strong class="font-semibold">3 Months</strong>
+                            <strong class="font-semibold">{{ $transaction->pricing->duration }} Months</strong>
                         </div>
                         <div class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
@@ -57,7 +61,8 @@
                                     class="size-5 shrink-0" />
                                 <p>Started At</p>
                             </div>
-                            <strong class="font-semibold">19 December 2024</strong>
+                            <strong
+                                class="font-semibold">{{ \Carbon\Carbon::parse($transaction->started_at)->format('d F Y') }}</strong>
                         </div>
                         <div class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
@@ -65,7 +70,8 @@
                                     class="size-5 shrink-0" />
                                 <p>Ended At</p>
                             </div>
-                            <strong class="font-semibold">19 March 2025</strong>
+                            <strong
+                                class="font-semibold">{{ \Carbon\Carbon::parse($transaction->ended_at)->format('d F Y') }}</strong>
                         </div>
                         <div class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
@@ -73,7 +79,8 @@
                                     class="size-5 shrink-0" />
                                 <p>PPN 11%</p>
                             </div>
-                            <strong class="font-semibold">Rp 189.000</strong>
+                            <strong class="font-semibold">Rp
+                                {{ number_format($transaction->total_tax_amount, thousands_separator: '.') }}</strong>
                         </div>
                         <div class="flex justify-between items-center">
                             <div class="flex gap-2 items-center">
@@ -81,7 +88,8 @@
                                     class="size-5 shrink-0" />
                                 <p class="whitespace-nowrap">Grand Total</p>
                             </div>
-                            <strong class="font-bold text-obito-green text-[22px] leading-[33px]"> Rp 28.583.481 </strong>
+                            <strong class="font-bold text-obito-green text-[22px] leading-[33px]"> Rp
+                                {{ number_format($transaction->grand_total_amount, thousands_separator: '.') }}</strong>
                         </div>
                     </div>
                 </section>
@@ -89,12 +97,12 @@
                     <h2 class="font-semibold">Access Given to</h2>
                     <div class="profile flex items-center gap-[14px] rounded-[20px] border border-obito-grey p-[14px]">
                         <div class="flex justify-center items-center overflow-hidden size-[50px] rounded-full">
-                            <img src="{{ asset('app/assets/images/photos/sami.png') }}" alt="image"
+                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="image"
                                 class="object-cover size-full" />
                         </div>
                         <div class="desc flex flex-col gap-[3px]">
-                            <h3 class="font-semibold">Tamara Utami</h3>
-                            <p class="text-sm leading-[21px] text-obito-text-secondary">Programmer UI</p>
+                            <h3 class="font-semibold">{{ Auth::user()->name }}</h3>
+                            <p class="text-sm leading-[21px] text-obito-text-secondary">{{ Auth::user()->occupation }}</p>
                         </div>
                     </div>
                 </section>
@@ -111,8 +119,8 @@
                         <img src="{{ asset('app/assets/images/icons/cup-green-fill.svg') }}" alt="icon"
                             class="size-[50px] shrink-0" />
                         <div>
-                            <h3 class="font-bold text-[18px] leading-[27px]">Pro Talent</h3>
-                            <p class="text-obito-text-secondary">3 months duration</p>
+                            <h3 class="font-bold text-[18px] leading-[27px]">{{ $transaction->pricing->name }}</h3>
+                            <p class="text-obito-text-secondary">{{ $transaction->pricing->duration }} months duration</p>
                         </div>
                     </div>
                     <div class="flex gap-2 items-center">

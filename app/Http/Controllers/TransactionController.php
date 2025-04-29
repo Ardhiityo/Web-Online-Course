@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pricing;
 use Illuminate\Http\Request;
 use App\Services\MidtransService;
-use Illuminate\Support\Facades\Log;
 use App\Services\TransactionService;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CheckoutStoreRequest;
 
 class TransactionController extends Controller

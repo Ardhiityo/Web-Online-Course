@@ -12,6 +12,11 @@ class TransactionService
 {
     public function __construct(private Transaction $transaction) {}
 
+    public function getAllTransactionById($studentId)
+    {
+        return Transaction::with('pricing')->where('user_id', $studentId)->get();
+    }
+
     public function createParams(int $pricingId)
     {
         $student = Auth::user();
