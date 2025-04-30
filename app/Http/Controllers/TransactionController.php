@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pricing;
 use Illuminate\Http\Request;
+use App\Services\CategoryService;
 use App\Services\MidtransService;
 use App\Services\TransactionService;
 use App\Http\Requests\CheckoutStoreRequest;
@@ -12,7 +13,8 @@ class TransactionController extends Controller
 {
     public function __construct(
         private MidtransService $midtransService,
-        private TransactionService $transactionService
+        private TransactionService $transactionService,
+        private CategoryService $categoryService
     ) {}
 
     public function checkoutStore(CheckoutStoreRequest $request)
@@ -37,8 +39,11 @@ class TransactionController extends Controller
     public function success($orderId)
     {
         $transaction = $this->transactionService->getTransactionByBookingTrxId($orderId);
+
         if (is_null($transaction)) return abort(404);
 
-        return view('transactions.success-checkout', compact('transaction'));
+        $slug = $this->categoryService->getFirstCategory()->slug;
+
+        return view('transactions.success-checkout', compact('transaction', 'slug'));
     }
 }
