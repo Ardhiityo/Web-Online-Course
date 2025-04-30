@@ -1,49 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <nav id="bottom-nav" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
-        <ul class="flex w-full max-w-[1280px] px-[75px] mx-auto gap-3">
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/home-trend-up.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Overview</span>
-                </a>
-            </li>
-            <li class="group active">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/note-favorite.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Courses</span>
-                </a>
-            </li>
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/message-programming.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Quizzess</span>
-                </a>
-            </li>
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/cup.svg') }}" class="flex w-5 shrink-0" alt="icon">
-                    <span>Certificates</span>
-                </a>
-            </li>
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/ruler&pen.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Portfolios</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <x-nav-menu />
     <main class="flex flex-col gap-10 pb-10 mt-[30px]">
         <section id="roadmap" class="flex flex-col w-full max-w-[1280px] px-[75px] gap-4 mx-auto">
             <h2 class="font-bold text-[22px] leading-[33px]">Popular Roadmap</h2>
@@ -118,8 +76,8 @@
             <h1 class="font-bold text-[22px] leading-[33px]">Course Catalog</h1>
             <div id="tabs-container" class="flex gap-3 items-center">
                 @foreach ($categories as $category)
-                    <a href="{{ route('catalog', ['category' => $category->slug]) }}"
-                        class="tab-btn group {{ $category->slug == request('category') ? 'active' : '' }}"
+                    <a href="{{ route('course', ['catalog' => $category->slug]) }}"
+                        class="tab-btn group {{ $category->slug == request('catalog') ? 'active' : '' }}"
                         data-target="{{ $category->slug }}">
                         <p
                             class="rounded-full border border-obito-grey py-2 px-4 hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-black">
@@ -132,7 +90,7 @@
             <div id="tabs-content-container" class="mt-1">
                 @foreach ($courses as $course)
                     <div id="{{ $course->category->slug }}" class="grid grid-cols-4 gap-5 tab-content">
-                        <a href="course-details.html" class="card">
+                        <a href="{{ route('course-details', $course->slug) }}" class="card">
                             <div
                                 class="course-card flex flex-col rounded-[20px] border border-obito-grey hover:border-obito-green transition-all duration-300 bg-white overflow-hidden">
                                 <div class="thumbnail-container p-[10px]">
@@ -158,8 +116,7 @@
                                     <p class="flex items-center gap-[6px]">
                                         <img src="{{ asset('app/assets/images/icons/menu-board-green.svg') }}"
                                             class="flex w-5 shrink-0" alt="icon">
-                                        <span
-                                            class="text-sm text-obito-text-secondary">{{ $course->total_course_section }}
+                                        <span class="text-sm text-obito-text-secondary">{{ $course->total_course_section }}
                                             Chapter from {{ $course->total_section_content }}
                                             Lessons</span>
                                     </p>

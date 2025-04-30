@@ -17,7 +17,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/success/{orderId}', [TransactionController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/{pricing}', [TransactionController::class, 'checkout'])->name('checkout');
 
-    Route::get('/catalog', [HomeController::class, 'catalog'])->name('catalog');
+    Route::get('/course', [HomeController::class, 'catalog'])->name('course');
+
+    Route::get('/course-details/{slug}', [HomeController::class, 'courseDetails'])->name('course-details');
 });
 
 Route::get('/dashboard', function () {

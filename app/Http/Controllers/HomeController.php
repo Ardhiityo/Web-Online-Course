@@ -25,16 +25,23 @@ class HomeController extends Controller
 
     public function catalog(Request $request)
     {
-        if ($slug = $request->query('category')) {
+        if ($slug = $request->query('catalog')) {
             $courses = $this->courseService->getCoursesByCategory($slug);
         } else {
             $category = $this->categoryService->getFirstCategory();
-            return redirect()->route('catalog', ['category' => $category->slug]);
+            return redirect()->route('catalog', ['catalog' => $category->slug]);
         }
 
         $popularCourses = $this->courseService->getPopularCourses();
         $categories = $this->categoryService->getAllCategories();
 
         return view("catalog", compact("popularCourses", "categories", "courses"));
+    }
+
+    public function courseDetails($slug)
+    {
+        $course = $this->courseService->getCourseBySlug($slug);
+
+        return view("", compact(""));
     }
 }

@@ -24,4 +24,9 @@ class CourseService
             ->get()
             ->append(['total_course_section', 'total_section_content']);
     }
+
+    public function getCourseBySlug(string $slug)
+    {
+        return Course::where('slug', $slug)->first();
+    }
 }

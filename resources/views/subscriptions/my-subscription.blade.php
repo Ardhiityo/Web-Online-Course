@@ -1,53 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <nav id="bottom-nav" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
-        <ul class="flex w-full max-w-[1280px] px-[75px] mx-auto gap-3">
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/home-trend-up.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Overview</span>
-                </a>
-            </li>
-            <li class="group">
-                <a href="catalog-v2.html"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/note-favorite.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Courses</span>
-                </a>
-            </li>
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/message-programming.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Quizzess</span>
-                </a>
-            </li>
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/cup.svg') }}" class="flex w-5 shrink-0" alt="icon">
-                    <span>Certificates</span>
-                </a>
-            </li>
-            <li class="group">
-                <a href="#"
-                    class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
-                    <img src="{{ asset('app/assets/images/icons/ruler&pen.svg') }}" class="flex w-5 shrink-0"
-                        alt="icon">
-                    <span>Portfolios</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <x-nav-menu />
     <main class="flex relative flex-1 h-full">
         <div id="background-banner" class="flex overflow-hidden absolute right-0 w-1/2 h-full shrink-0">
-            <img src="{{ asset('app/assets/images/backgrounds/banner-subscription.png') }}"
-                class="object-cover w-full h-full" alt="banner">
+            <img src="{{ asset('app/assets/images/backgrounds/banner-subscription.png') }}" class="object-cover w-full h-full"
+                alt="banner">
         </div>
         <section id="subscriptions-list"
             class="relative flex flex-col gap-5 mt-[50px] w-full max-w-[1280px] px-[75px] py-5 mx-auto">

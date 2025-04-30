@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-menu />
     <main class="flex flex-1 justify-center items-center py-5">
         <div class="w-[500px] flex flex-col gap-[30px]">
             <div class="flex flex-col gap-[10px]">
@@ -46,7 +47,7 @@
                         <p class="font-semibold">My Transactions</p>
                     </div>
                 </a>
-                <a href="{{ route('catalog', ['category' => $slug]) }}">
+                <a href="{{ route('course', ['catalog' => $slug]) }}">
                     <div
                         class="flex items-center px-5 justify-center text-white rounded-full py-[10px] bg-obito-green hover:drop-shadow-effect transition-all duration-300">
                         <p class="font-semibold">Start Learning</p>

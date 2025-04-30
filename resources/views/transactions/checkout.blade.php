@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+    <div id="path" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
+        <div class="flex items-center w-full max-w-[1280px] px-[75px] mx-auto gap-5">
+            <a href="{{ route('home') }}" class="last-of-type:font-semibold">Home</a>
+            <div class="h-10 w-px bg-obito-grey"></div>
+            <a href="{{ route('pricing') }}" class="last-of-type:font-semibold">Pricing Packages</a>
+            <span class="text-obito-grey">/</span>
+            <a href="{{ url()->current() }}" class="last-of-type:font-semibold">Checkout Subscription</a>
+        </div>
+    </div>
     <main class="flex flex-1 justify-center items-center py-5">
         <div class="flex w-[1000px] !h-fit rounded-[20px] border border-obito-grey gap-[40px] bg-white items-center p-5">
             <form id="checkout-details" class="flex flex-col gap-5 w-full">
