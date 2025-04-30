@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
+use Illuminate\Http\Request;
 use App\Services\CourseService;
 use App\Services\PricingService;
-use Illuminate\Http\Request;
+use App\Services\CategoryService;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -42,6 +43,6 @@ class HomeController extends Controller
     {
         $course = $this->courseService->getCourseBySlug($slug);
 
-        return view("", compact(""));
+        return view("course-details", compact('course'));
     }
 }
