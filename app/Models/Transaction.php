@@ -28,7 +28,7 @@ class Transaction extends Model
     protected function casts(): array
     {
         return [
-            'is_paid' => 'bool'
+            'is_paid' => 'boolean'
         ];
     }
 

@@ -74,8 +74,9 @@ class Course extends Model
         return $this->hasMany(CourseMentor::class);
     }
 
-    public function courseStudents()
+    public function users()
     {
-        return $this->hasMany(CourseStudent::class);
+        return $this->belongsToMany(User::class, 'course_students', 'user_id', 'course_id')
+            ->using(CourseStudent::class);
     }
 }

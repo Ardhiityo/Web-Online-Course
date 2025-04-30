@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
-    public function __construct(private CourseService $courseService, private CategoryService $categoryService) {}
+    public function __construct(
+        private CourseService $courseService,
+        private CategoryService $categoryService
+    ) {}
 
     public function index()
     {
@@ -34,6 +37,7 @@ class HomeController extends Controller
         }
 
         $popularCourses = $this->courseService->getPopularCourses();
+
         $categories = $this->categoryService->getAllCategories();
 
         return view("catalog", compact("popularCourses", "categories", "courses"));
@@ -44,5 +48,16 @@ class HomeController extends Controller
         $course = $this->courseService->getCourseBySlug($slug);
 
         return view("course-details", compact('course'));
+    }
+
+    public function successJoin($slug)
+    {
+        $course = $this->courseService->getCourseBySlug($slug);
+
+        if (!$course) return abort(404);
+
+        $this->courseService->studentJoinCourse($slug);
+
+        return view('success-join', compact('course'));
     }
 }

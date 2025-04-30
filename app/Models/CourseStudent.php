@@ -2,18 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CourseStudent extends Model
+class CourseStudent extends Pivot
 {
     use SoftDeletes;
+
+    public $incrementing = true;
+
+    protected $table = 'course_students';
 
     protected $fillable = [
         'course_id',
         'user_id',
         'is_active'
     ];
+
+    protected $casts = ['is_active' => 'boolean'];
 
     public function user()
     {

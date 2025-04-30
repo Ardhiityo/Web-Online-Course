@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Category;
 use App\Models\Course;
+use App\Models\Category;
+use App\Models\CourseStudent;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class CourseService
 {
@@ -31,5 +34,21 @@ class CourseService
             ->where('slug', $slug)
             ->first()
             ->append(['total_course_section', 'total_section_content']);
+    }
+
+    public function studentJoinCourse(string $slug)
+    {
+        $course = Course::where('slug', $slug)->first();
+
+        $student = Auth::user();
+
+        $studentHasCourse = $student->courses()
+            ->wherePivot('course_id', $course->id)
+            ->wherePivot('user_id', $student->id)
+            ->exists();
+
+        if (!$studentHasCourse) {
+            $student->courses()->attach($course->id, ['is_active' => true]);
+        }
     }
 }
