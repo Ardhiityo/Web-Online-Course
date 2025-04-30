@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CategoryService;
 use App\Services\CourseService;
 use App\Services\PricingService;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function __construct(private CourseService $courseService) {}
+    public function __construct(private CourseService $courseService, private CategoryService $categoryService) {}
 
     public function index()
     {
@@ -22,10 +23,18 @@ class HomeController extends Controller
         return view("pricing", compact("pricings"));
     }
 
-    public function catalog()
+    public function catalog(Request $request)
     {
-        $courses = $this->courseService->getPopularCourses();
+        if ($slug = $request->query('category')) {
+            $courses = $this->courseService->getCoursesByCategory($slug);
+        } else {
+            $category = $this->categoryService->getFirstCategory();
+            return redirect()->route('catalog', ['category' => $category->slug]);
+        }
 
-        return view("catalog", compact("courses"));
+        $popularCourses = $this->courseService->getPopularCourses();
+        $categories = $this->categoryService->getAllCategories();
+
+        return view("catalog", compact("popularCourses", "categories", "courses"));
     }
 }
