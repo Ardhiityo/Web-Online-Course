@@ -20,6 +20,28 @@ class Course extends Model
         'is_popular'
     ];
 
+    protected function totalCourseSection(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->courseSections->count();
+            }
+        );
+    }
+
+    protected function totalSectionContent(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $total = 0;
+                foreach ($this->courseSections as $courseSection) {
+                    $total += $courseSection->sectionContents->count();
+                }
+                return $total;
+            }
+        );
+    }
+
     protected function name(): Attribute
     {
         return Attribute::make(

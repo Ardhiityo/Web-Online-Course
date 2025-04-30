@@ -16,6 +16,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/subscription-details/{transaction}', [SubscriptionController::class, 'subscriptionDetail'])->name('checkout.subscription-details');
     Route::get('/checkout/success/{orderId}', [TransactionController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/{pricing}', [TransactionController::class, 'checkout'])->name('checkout');
+
+    Route::get('/catalog', [HomeController::class, 'catalog'])->name('catalog');
 });
 
 Route::get('/dashboard', function () {

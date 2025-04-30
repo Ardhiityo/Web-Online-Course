@@ -46,7 +46,7 @@
                         <p class="font-semibold">My Transactions</p>
                     </div>
                 </a>
-                <a href="catalog-v2.html">
+                <a href="{{ route('catalog') }}">
                     <div
                         class="flex items-center px-5 justify-center text-white rounded-full py-[10px] bg-obito-green hover:drop-shadow-effect transition-all duration-300">
                         <p class="font-semibold">Start Learning</p>
