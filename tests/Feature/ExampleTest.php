@@ -15,10 +15,10 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $booking_trx_id = (string) Uuid::uuid4();
+        $paginate = CourseSection::pluck('id')->toArray();
 
         self::assertTrue(true);
 
-        Log::info($booking_trx_id);
+        Log::info($paginate);
     }
 }

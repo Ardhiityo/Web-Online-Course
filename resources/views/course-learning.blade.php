@@ -81,7 +81,11 @@
                                 class="rounded-full border border-obito-grey px-5 py-[10px] hover:border-obito-green transition-all duration-300">
                                 <span class="font-semibold">Ask Mentor</span>
                             </a>
-                            <a href="learning-finished.html"
+                            <a href="{{ route('course-learning-next', [
+                                'slug' => $course->slug,
+                                'courseSectionId' => request('courseSectionId'),
+                                'sectionContentId' => request('sectionContentId'),
+                            ]) }}"
                                 class="rounded-full border bg-obito-green text-white px-5 py-[10px] hover:drop-shadow-effect transition-all duration-300">
                                 <span class="font-semibold">Next Lesson</span>
                             </a>

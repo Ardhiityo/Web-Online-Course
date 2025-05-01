@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseSection;
 use Illuminate\Http\Request;
+use App\Models\SectionContent;
 use App\Services\CourseService;
 use App\Services\PricingService;
 use App\Services\CategoryService;
@@ -84,5 +86,57 @@ class HomeController extends Controller
         if (!$content) return abort(404);
 
         return view('course-learning', compact('course', 'content'));
+    }
+
+    public function nextLearning($slug, $courseSectionId, $sectionContentId)
+    {
+        //Ambil Course
+        $course = $this->courseService->getCourseBySlug($slug);
+
+        // Ambil id dalam course section berdasarkan courseId yang sekarang
+        $section = $course->courseSections()->find($courseSectionId);
+
+        // Ambil semua id section content berdasarkan id course section di database
+        $allSectionContentId = SectionContent::where('course_section_id', $section->id)
+            ->pluck('id')->toArray();
+
+        // Cek id section content pada id section content yang ada
+        if (in_array($sectionContentId, $allSectionContentId)) {
+            $currentIndex = array_search($sectionContentId, $allSectionContentId);
+            $nextContentId = $allSectionContentId[$currentIndex + 1] ?? null;
+
+            if ($nextContentId) {
+                $content = $section->sectionContents()->find($nextContentId);
+
+                if ($content) {
+                    return redirect()->route('course-learning', [
+                        'slug' => $course->slug,
+                        'courseSectionId' => $section->id,
+                        'sectionContentId' => $content->id
+                    ]);
+                }
+            } else {
+                // Jika tidak ada section konten selanjutnya, cek course section selanjutnya
+                $allCourseSectionId = CourseSection::where('course_id', $course->id)
+                    ->pluck('id')->toArray();
+
+                $currentSectionIndex = array_search($courseSectionId, $allCourseSectionId);
+                $nextSectionId = $allCourseSectionId[$currentSectionIndex + 1] ?? null;
+
+                if ($nextSectionId) {
+                    $section = CourseSection::find($nextSectionId);
+                    $content = SectionContent::where('course_section_id', $section->id)->first();
+
+                    return redirect()->route('course-learning', [
+                        'slug' => $course->slug,
+                        'courseSectionId' => $section->id,
+                        'sectionContentId' => $content->id
+                    ]);
+                }
+            }
+        }
+
+        // Jika tidak ada section selanjutnya, kembali ke halaman kursus
+        return "Success";
     }
 }
