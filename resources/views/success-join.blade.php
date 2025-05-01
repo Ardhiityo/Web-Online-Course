@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="relative flex justify-center">
-        <div id="backgroundImage" class="absolute top-0 left-0 right-0">
+    <div class="flex relative justify-center">
+        <div id="backgroundImage" class="absolute top-0 right-0 left-0">
             <img src="{{ asset('app/assets/images/backgrounds/success-join.png') }}" alt="image"
                 class="h-[777px] object-cover object-bottom w-full" />
         </div>
@@ -20,7 +20,7 @@
                 class="flex items-center pt-[10px] pb-[10px] pl-[10px] pr-4 border border-obito-grey rounded-[20px] gap-4">
                 <div class="flex justify-center items-center overflow-hidden shrink-0 w-[180px] h-[130px] rounded-[14px]">
                     <img src="{{ asset('app/assets/images/thumbnails/thumbnail-9.png') }}" alt="image"
-                        class="w-full h-full object-cover" />
+                        class="object-cover w-full h-full" />
                 </div>
                 <div class="flex flex-col gap-[10px]">
                     <h2 class="font-bold">{{ $course->name }}</h2>
@@ -43,7 +43,11 @@
                     class="border border-obito-grey rounded-full py-[10px] flex justify-center items-center hover:border-obito-green transition-all duration-300">
                     <span class="font-semibold">Get Guidelines</span>
                 </a>
-                <a href="course-learning.html"
+                <a href="{{ route('course-learning', [
+                    'slug' => $course->slug,
+                    'courseSectionId' => $courseSection->id,
+                    'sectionContentId' => $sectionContent->id,
+                ]) }}"
                     class="text-white rounded-full py-[10px] flex justify-center items-center bg-obito-green hover:drop-shadow-effect transition-all duration-300">
                     <span class="font-semibold">Start Learning</span>
                 </a>

@@ -20,8 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/course', [HomeController::class, 'catalog'])->name('course');
 
     Route::get('/course/details/{slug}', [HomeController::class, 'courseDetails'])->name('course-details');
-
     Route::get('/course/success-join/{slug}', [HomeController::class, 'successJoin'])->name('course-success-join');
+    Route::get('/course/learning/{slug}/{courseSectionId}/{sectionContentId}', [HomeController::class, 'learning'])->name('course-learning');
 });
 
 Route::get('/dashboard', function () {

@@ -28,12 +28,19 @@ class CourseService
             ->append(['total_course_section', 'total_section_content']);
     }
 
-    public function getCourseBySlug(string $slug)
+    public function getCourseDetailBySlug(string $slug)
     {
         return Course::with(['category', 'courseSections' => ['sectionContents']])
             ->where('slug', $slug)
             ->first()
             ->append(['total_course_section', 'total_section_content']);
+    }
+
+    public function getCourseBySlug(string $slug)
+    {
+        return Course::with(['category', 'courseSections' => ['sectionContents']])
+            ->where('slug', $slug)
+            ->first();
     }
 
     public function studentJoinCourse(string $slug)
@@ -50,5 +57,17 @@ class CourseService
         if (!$studentHasCourse) {
             $student->courses()->attach($course->id, ['is_active' => true]);
         }
+    }
+
+    public function getCourseSectionAndSectionContentById(Course $course, int $courseSectionId, int $sectionContentId)
+    {
+        $courseSection = $course->courseSections()
+            ->find($courseSectionId)
+            ->load('sectionContents');
+
+        $sectionContent = $courseSection->sectionContents()
+            ->find('id', $sectionContentId);
+
+        return compact('courseSection', 'sectionContent');
     }
 }
