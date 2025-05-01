@@ -137,6 +137,15 @@ class HomeController extends Controller
         }
 
         // Jika tidak ada section selanjutnya, kembali ke halaman kursus
-        return "Success";
+        return redirect()->route('course-learning-finished', ['slug' => $slug]);
+    }
+
+    public function learningFinished(string $slug)
+    {
+        $course = $this->courseService->getCourseDetailBySlug($slug);
+
+        if (!$course) return abort(404);
+
+        return view('course-learning-finished', compact('course'));
     }
 }
