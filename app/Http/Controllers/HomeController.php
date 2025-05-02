@@ -77,6 +77,8 @@ class HomeController extends Controller
 
         if (!$course) return abort(404);
 
+        $latestCourseSectionId = $course->courseSections()->latest()->first();
+
         $section = $course->courseSections()->find($courseSectionId);
 
         if (!$section) return abort(404);
@@ -84,6 +86,11 @@ class HomeController extends Controller
         $content = $section->sectionContents()->find($sectionContentId);
 
         if (!$content) return abort(404);
+
+        $latestSectionContentId = $latestCourseSectionId->sectionContents()->latest()->first();
+
+        $sectionContentId == $latestSectionContentId->id ?
+            session()->put('completed', true) : session()->put('completed', false);
 
         return view('course-learning', compact('course', 'content'));
     }
@@ -102,7 +109,7 @@ class HomeController extends Controller
 
         // Cek id section content pada id section content yang ada
         if (in_array($sectionContentId, $allSectionContentId)) {
-            $currentIndex = array_search($sectionContentId, $allSectionContentId);
+            $currentIndex = array_search($sectionContentId,  $allSectionContentId);
             $nextContentId = $allSectionContentId[$currentIndex + 1] ?? null;
 
             if ($nextContentId) {
@@ -135,7 +142,6 @@ class HomeController extends Controller
                 }
             }
         }
-
         // Jika tidak ada section selanjutnya, kembali ke halaman kursus
         return redirect()->route('course-learning-finished', ['slug' => $slug]);
     }
