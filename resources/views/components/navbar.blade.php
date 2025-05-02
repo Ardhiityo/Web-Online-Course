@@ -19,22 +19,24 @@
                 </li>
             </ul>
         </div>
-        <div class="flex gap-5 justify-end items-center">
-            <a href="{{ route('pricing') }}" class="flex shrink-0">
-                <img src="{{ asset('app/assets/images/icons/device-message.svg') }}" class="flex shrink-0"
-                    alt="icon">
-            </a>
-            <div class="h-[50px] flex shrink-0 bg-obito-grey w-px"></div>
-            <div class="flex gap-3 items-center">
-                <a href="{{ route('register') }}"
-                    class="rounded-full border border-obito-grey py-3 px-5 gap-[10px] bg-white hover:border-obito-green transition-all duration-300">
-                    <span class="font-semibold">Sign Up</span>
+        @if (!Auth::check())
+            <div class="flex gap-5 justify-end items-center">
+                <a href="{{ route('pricing') }}" class="flex shrink-0">
+                    <img src="{{ asset('app/assets/images/icons/device-message.svg') }}" class="flex shrink-0"
+                        alt="icon">
                 </a>
-                <a href="{{ route('login') }}"
-                    class="rounded-full py-3 px-5 gap-[10px] bg-obito-green hover:drop-shadow-effect transition-all duration-300">
-                    <span class="font-semibold text-white">My Account</span>
-                </a>
+                <div class="h-[50px] flex shrink-0 bg-obito-grey w-px"></div>
+                <div class="flex gap-3 items-center">
+                    <a href="{{ route('register') }}"
+                        class="rounded-full border border-obito-grey py-3 px-5 gap-[10px] bg-white hover:border-obito-green transition-all duration-300">
+                        <span class="font-semibold">Sign Up</span>
+                    </a>
+                    <a href="{{ route('login') }}"
+                        class="rounded-full py-3 px-5 gap-[10px] bg-obito-green hover:drop-shadow-effect transition-all duration-300">
+                        <span class="font-semibold text-white">My Account</span>
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </nav>

@@ -4,7 +4,7 @@
     <x-nav-menu />
     <main class="flex flex-col gap-10 pb-10 mt-[30px]">
         <section id="roadmap" class="flex flex-col w-full max-w-[1280px] px-[75px] gap-4 mx-auto">
-            <h2 class="font-bold text-[22px] leading-[33px]">Popular Roadmap</h2>
+            <h2 class="font-bold text-[22px] leading-[33px]">Popular Course</h2>
             <div class="grid grid-cols-2 gap-5">
                 @forelse ($popularCourses as $course)
                     <a href="#" class="card">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
@@ -16,14 +17,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/success/{orderId}', [TransactionController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/{pricing}', [TransactionController::class, 'checkout'])->name('checkout');
 
-    Route::get('/course', [HomeController::class, 'catalog'])->name('course');
-    Route::get('/course/details/{slug}', [HomeController::class, 'courseDetails'])->name('course-details');
-    Route::get('/course/success-join/{slug}', [HomeController::class, 'successJoin'])->name('course-success-join');
-    Route::get('/course/learning/{slug}/{courseSectionId}/{sectionContentId}', [HomeController::class, 'learning'])
+    Route::get('/course', [CourseController::class, 'catalog'])->name('course');
+    Route::get('/course/details/{slug}', [CourseController::class, 'courseDetails'])->name('course-details');
+    Route::get('/course/success-join/{slug}', [CourseController::class, 'successJoin'])->name('course-success-join');
+    Route::get('/course/learning/{slug}/{courseSectionId}/{sectionContentId}', [CourseController::class, 'learning'])
         ->name('course-learning');
-    Route::get('/course/learning/next/{slug}/{courseSectionId}/{sectionContentId}', [HomeController::class, 'nextLearning'])
+    Route::get('/course/learning/next/{slug}/{courseSectionId}/{sectionContentId}', [CourseController::class, 'nextLearning'])
         ->name('course-learning-next');
-    Route::get('/course/learning/{slug}/finished', [HomeController::class, 'learningFinished'])
+    Route::get('/course/learning/{slug}/finished', [CourseController::class, 'learningFinished'])
         ->name('course-learning-finished');
 });
 
