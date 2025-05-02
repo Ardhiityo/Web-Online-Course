@@ -17,15 +17,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout/success/{orderId}', [TransactionController::class, 'success'])->name('checkout.success');
     Route::get('/checkout/{pricing}', [TransactionController::class, 'checkout'])->name('checkout');
 
-    Route::get('/course', [CourseController::class, 'catalog'])->name('course');
-    Route::get('/course/details/{slug}', [CourseController::class, 'courseDetails'])->name('course-details');
-    Route::get('/course/success-join/{slug}', [CourseController::class, 'successJoin'])->name('course-success-join');
-    Route::get('/course/learning/{slug}/{courseSectionId}/{sectionContentId}', [CourseController::class, 'learning'])
-        ->name('course-learning');
-    Route::get('/course/learning/next/{slug}/{courseSectionId}/{sectionContentId}', [CourseController::class, 'nextLearning'])
-        ->name('course-learning-next');
-    Route::get('/course/learning/{slug}/finished', [CourseController::class, 'learningFinished'])
-        ->name('course-learning-finished');
+    Route::middleware('membership')->group(function () {
+        Route::get('/course', [CourseController::class, 'catalog'])->name('course');
+        Route::get('/course/details/{slug}', [CourseController::class, 'courseDetails'])->name('course-details');
+        Route::get('/course/success-join/{slug}', [CourseController::class, 'successJoin'])->name('course-success-join');
+        Route::get('/course/learning/{slug}/{courseSectionId}/{sectionContentId}', [CourseController::class, 'learning'])
+            ->name('course-learning');
+        Route::get('/course/learning/next/{slug}/{courseSectionId}/{sectionContentId}', [CourseController::class, 'nextLearning'])
+            ->name('course-learning-next');
+        Route::get('/course/learning/{slug}/finished', [CourseController::class, 'learningFinished'])
+            ->name('course-learning-finished');
+    });
 });
 
 Route::get('/dashboard', function () {

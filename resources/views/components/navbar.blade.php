@@ -6,7 +6,7 @@
             </a>
             <ul class="flex gap-10 items-center">
                 <li class="font-semibold transition-all duration-300 hover:font-semibold">
-                    <a href="{{ route('home') }}">Home</a>
+                    <a href="{{ route('course') }}">Home</a>
                 </li>
                 <li class="transition-all duration-300 hover:font-semibold">
                     <a href="{{ route('pricing') }}">Pricing</a>
