@@ -38,45 +38,20 @@ class CourseController extends Controller
 
     public function successJoin($slug)
     {
-        $course = $this->courseService->getCourseDetailBySlug($slug);
+        $course = $this->courseService->successJoin($slug);
 
-        if (!$course) return abort(404);
-
-        $this->courseService->studentJoinCourse($slug);
-
-        $courseSection = $course->courseSections()->first();
-
-        if (!$courseSection) return abort(404);
-
-        $sectionContent = $courseSection->sectionContents()->first();
-
-        if (!$sectionContent) return abort(404);
-
-        return view('success-join', compact('course', 'courseSection', 'sectionContent'));
+        return view('success-join', $course);
     }
 
     public function learning($slug, $courseSectionId, $sectionContentId)
     {
-        $course = $this->courseService->getCourseBySlug($slug);
+        $learning = $this->courseService->learning(
+            $slug,
+            $courseSectionId,
+            $sectionContentId
+        );
 
-        if (!$course) return abort(404);
-
-        $latestCourseSectionId = $course->courseSections()->latest()->first();
-
-        $section = $course->courseSections()->find($courseSectionId);
-
-        if (!$section) return abort(404);
-
-        $content = $section->sectionContents()->find($sectionContentId);
-
-        if (!$content) return abort(404);
-
-        $latestSectionContentId = $latestCourseSectionId->sectionContents()->latest()->first();
-
-        $sectionContentId == $latestSectionContentId->id ?
-            session()->put('completed', true) : session()->put('completed', false);
-
-        return view('courses.course-learning', compact('course', 'content'));
+        return view('courses.course-learning', $learning);
     }
 
     public function nextLearning($slug, $courseSectionId, $sectionContentId)

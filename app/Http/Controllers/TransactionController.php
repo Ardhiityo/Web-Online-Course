@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Services\CategoryService;
 use App\Services\MidtransService;
 use App\Services\TransactionService;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CheckoutStoreRequest;
 
 class TransactionController extends Controller

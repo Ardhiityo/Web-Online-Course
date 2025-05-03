@@ -76,6 +76,49 @@ class CourseService
         return compact('courseSection', 'sectionContent');
     }
 
+    public function successJoin($slug)
+    {
+        $course = $this->getCourseDetailBySlug($slug);
+
+        if (!$course) return abort(404);
+
+        $this->studentJoinCourse($slug);
+
+        $courseSection = $course->courseSections()->first();
+
+        if (!$courseSection) return abort(404);
+
+        $sectionContent = $courseSection->sectionContents()->first();
+
+        if (!$sectionContent) return abort(404);
+
+        return compact('course', 'courseSection', 'sectionContent');
+    }
+
+    public function learning(string $slug, int $courseSectionId, int $sectionContentId)
+    {
+        $course = $this->getCourseBySlug($slug);
+
+        if (!$course) return abort(404);
+
+        $latestCourseSectionId = $course->courseSections()->latest()->first();
+
+        $section = $course->courseSections()->find($courseSectionId);
+
+        if (!$section) return abort(404);
+
+        $content = $section->sectionContents()->find($sectionContentId);
+
+        if (!$content) return abort(404);
+
+        $latestSectionContentId = $latestCourseSectionId->sectionContents()->latest()->first();
+
+        $sectionContentId == $latestSectionContentId->id ?
+            session()->put('completed', true) : session()->put('completed', false);
+
+        return compact('course', 'content');
+    }
+
     public function nextLearning(string $slug, int $courseSectionId, int $sectionContentId)
     {
         //Ambil Course berdasarkan slug parameter

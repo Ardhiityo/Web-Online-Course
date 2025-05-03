@@ -6,7 +6,6 @@ use App\Services\CourseService;
 use App\Services\PricingService;
 use App\Services\CategoryService;
 use App\Services\TransactionService;
-use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
