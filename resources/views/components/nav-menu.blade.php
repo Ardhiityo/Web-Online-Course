@@ -1,7 +1,7 @@
 <nav id="bottom-nav" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
     <ul class="flex w-full max-w-[1280px] px-[75px] mx-auto gap-3">
         <li class="group">
-            <a href="#"
+            <a href="{{ route('course') }}"
                 class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
                 <img src="{{ asset('app/assets/images/icons/home-trend-up.svg') }}" class="flex w-5 shrink-0"
                     alt="icon">
@@ -9,7 +9,7 @@
             </a>
         </li>
         <li class="group {{ request()->routeIs('course') ? 'active' : '' }}">
-            <a href="{{ route('course', ['catalog' => $slug]) }}"
+            <a href="{{ route('course-search') }}"
                 class="flex items-center gap-2 rounded-full border border-obito-grey py-2 px-[14px] hover:border-obito-green bg-white transition-all duration-300 group-[.active]:bg-obito-light-green group-[.active]:border-obito-light-green">
                 <img src="{{ asset('app/assets/images/icons/note-favorite.svg') }}" class="flex w-5 shrink-0"
                     alt="icon">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\CourseService;
 use App\Services\CategoryService;
+use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
@@ -70,5 +71,16 @@ class CourseController extends Controller
         if (!$course) return abort(404);
 
         return view('courses.course-learning-finished', compact('course'));
+    }
+
+    public function search(Request $request)
+    {
+        if ($keywords = $request->query('keywords')) {
+            $courses = $this->courseService->searchCourse($keywords);
+        } else {
+            $courses = $this->courseService->searchCourse('');
+        }
+
+        return view('search-course', compact('courses'));
     }
 }

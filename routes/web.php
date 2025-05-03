@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('membership')->group(function () {
         Route::get('/course', [CourseController::class, 'catalog'])->name('course');
+        Route::get('/course/search', [CourseController::class, 'search'])->name('course-search');
         Route::get('/course/details/{slug}', [CourseController::class, 'courseDetails'])->name('course-details');
         Route::get('/course/success-join/{slug}', [CourseController::class, 'successJoin'])->name('course-success-join');
         Route::get('/course/learning/{slug}/{courseSectionId}/{sectionContentId}', [CourseController::class, 'learning'])

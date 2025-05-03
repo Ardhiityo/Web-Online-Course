@@ -187,4 +187,16 @@ class CourseService
         // Jika tidak ada section selanjutnya, maka kembalikan ke halaman kursus selesai
         return redirect()->route('course-learning-finished', ['slug' => $slug]);
     }
+
+    public function searchCourse(string $keywords)
+    {
+        return Course::with('category')->where('name', 'like', "%$keywords%")
+            ->orWhere('about', 'like', "%$keywords%")
+            ->latest()
+            ->get()
+            ->append([
+                'total_course_section',
+                'total_section_content'
+            ]);;
+    }
 }
