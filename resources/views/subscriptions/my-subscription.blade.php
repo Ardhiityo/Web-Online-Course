@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-profile />
     <x-nav-menu />
     <main class="flex relative flex-1 h-full">
         <div id="background-banner" class="flex overflow-hidden absolute right-0 w-1/2 h-full shrink-0">
@@ -58,6 +59,6 @@
     </main>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="js/dropdown-navbar.js"></script>
-@endsection
+@endpush

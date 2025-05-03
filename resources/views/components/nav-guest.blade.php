@@ -5,14 +5,17 @@
                 <img src="{{ asset('app/assets/images/logos/logo.svg') }}" class="flex shrink-0" alt="logo">
             </a>
             <ul class="flex gap-10 items-center">
-                <li class="font-semibold transition-all duration-300 hover:font-semibold">
-                    <a href="{{ route('course') }}">Home</a>
+                <li
+                    class="{{ request()->routeIs('home') ? 'font-semibold' : '' }} transition-all duration-300 hover:font-semibold">
+                    <a href="{{ route('home') }}">Home</a>
                 </li>
-                <li class="transition-all duration-300 hover:font-semibold">
+                <li
+                    class="transition-all {{ request()->routeIs('pricing') ? 'font-semibold' : '' }} duration-300 hover:font-semibold">
                     <a href="{{ route('pricing') }}">Pricing</a>
                 </li>
-                <li class="transition-all duration-300 hover:font-semibold">
-                    <a href="#">Features</a>
+                <li
+                    class="transition-all duration-300 {{ request()->routeIs('course') ? 'font-semibold' : '' }} hover:font-semibold">
+                    <a href="{{ route('course') }}">Courses</a>
                 </li>
                 <li class="transition-all duration-300 hover:font-semibold">
                     <a href="#">Testimonials</a>

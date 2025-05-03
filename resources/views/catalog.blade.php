@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-profile />
     <x-nav-menu />
     <main class="flex flex-col gap-10 pb-10 mt-[30px]">
         <section id="roadmap" class="flex flex-col w-full max-w-[1280px] px-[75px] gap-4 mx-auto">
@@ -135,7 +136,7 @@
     </main>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="{{ asset('app/js/dropdown-navbar.js') }}"></script>
     <script src="{{ asset('app/js/tabs.js') }}"></script>
-@endsection
+@endpush

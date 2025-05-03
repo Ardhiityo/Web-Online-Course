@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-guest />
     <main class="flex flex-col flex-1 justify-center">
         <section id="pricing" class="flex flex-col items-center gap-[33px] mt-[50px]">
             <div class="flex flex-col items-center gap-[10px] max-w-[500px] w-full">

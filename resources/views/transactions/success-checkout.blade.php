@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-profile />
     <x-nav-menu />
     <main class="flex flex-1 justify-center items-center py-5">
         <div class="w-[500px] flex flex-col gap-[30px]">
@@ -58,6 +59,6 @@
     </main>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="js/dropdown-navbar.js"></script>
-@endsection
+@endpush

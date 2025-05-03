@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-profile />
     <div id="path" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
         <div class="flex items-center w-full max-w-[1280px] px-[75px] mx-auto gap-5">
             <a href="{{ route('home') }}" class="last-of-type:font-semibold">Home</a>
@@ -165,7 +166,7 @@
     </main>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="{{ asset('app/js/dropdown-navbar.js') }}"></script>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
     </script>
@@ -209,4 +210,4 @@
             }
         })
     </script>
-@endsection
+@endpush

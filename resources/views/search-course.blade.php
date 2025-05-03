@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-profile />
     <x-nav-menu />
     <main class="flex flex-col gap-10 pb-10 mt-[50px]">
         <div class="flex flex-col items-center gap-[10px] max-w-[500px] w-full mx-auto">
@@ -69,6 +70,6 @@
     </main>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="{{ asset('app/js/dropdown-navbar.js') }}"></script>
-@endsection
+@endpush

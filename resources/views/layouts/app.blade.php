@@ -23,9 +23,8 @@
 </head>
 
 <body>
-    <x-navbar />
     @yield('content')
-    @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

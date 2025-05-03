@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-nav-guest />
     <main class="flex relative flex-1 h-full">
         <section class="flex flex-1 items-center py-5 px-5 pl-[calc(((100%-1280px)/2)+75px)]">
             <form action="{{ route('login') }}" method="POST"
