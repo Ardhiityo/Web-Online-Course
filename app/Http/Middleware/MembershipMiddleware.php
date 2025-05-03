@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\TransactionService;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MembershipMiddleware
 {
+
+    public function __construct(private TransactionService $transactionService) {}
+
     /**
      * Handle an incoming request.
      *
@@ -16,14 +20,7 @@ class MembershipMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $student = Auth::user();
-
-        $isMembership = $student->transactions()
-            ->where('is_paid', true)
-            ->where('ended_at', '>=', now())
-            ->exists();
-
-        if ($isMembership) {
+        if ($this->transactionService->hasMembership()) {
             return $next($request);
         }
 

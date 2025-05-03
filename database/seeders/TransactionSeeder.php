@@ -14,8 +14,10 @@ class TransactionSeeder extends Seeder
      */
     public function run(): void
     {
+        $user = User::where('email', 'aryaadi229@gmail.com')->first();
+
         Transaction::create([
-            'user_id' => User::first()->id,
+            'user_id' => $user->id,
             'pricing_id' => Pricing::first()->id,
             'sub_total_amount' => 10000,
             'total_tax_amount' => 1000,

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\CategoryService;
 use App\Services\MidtransService;
 use App\Services\TransactionService;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CheckoutStoreRequest;
 
 class TransactionController extends Controller
@@ -33,7 +34,9 @@ class TransactionController extends Controller
 
     public function checkout(Pricing $pricing)
     {
-        return view("transactions.checkout", compact('pricing'));
+        $hasMembership = $this->transactionService->hasMembership();
+
+        return view("transactions.checkout", compact('pricing', 'hasMembership'));
     }
 
     public function success($orderId)

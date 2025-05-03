@@ -4,7 +4,7 @@
     <div id="path" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
         <div class="flex items-center w-full max-w-[1280px] px-[75px] mx-auto gap-5">
             <a href="{{ route('home') }}" class="last-of-type:font-semibold">Home</a>
-            <div class="h-10 w-px bg-obito-grey"></div>
+            <div class="w-px h-10 bg-obito-grey"></div>
             <a href="{{ route('pricing') }}" class="last-of-type:font-semibold">Pricing Packages</a>
             <span class="text-obito-grey">/</span>
             <a href="{{ url()->current() }}" class="last-of-type:font-semibold">Checkout Subscription</a>
@@ -102,10 +102,17 @@
                             <p class="font-semibold">Cancel</p>
                         </div>
                     </a>
-                    <button type="submit"
-                        class="flex text-white bg-obito-green rounded-full items-center justify-center py-[10px] hover:drop-shadow-effect transition-all duration-300">
-                        <p class="font-semibold">Pay Now</p>
-                    </button>
+                    @if ($hasMembership)
+                        <button type="submit" disabled
+                            class="flex text-white bg-obito-grey rounded-full items-center justify-center py-[10px]">
+                            <p class="font-semibold text-obito-text-grey">Membership ongoing</p>
+                        </button>
+                    @else
+                        <button type="submit"
+                            class="flex text-white bg-obito-green rounded-full items-center justify-center py-[10px] hover:drop-shadow-effect transition-all duration-300">
+                            <p class="font-semibold">Pay Now</p>
+                        </button>
+                    @endif
                 </div>
                 <hr class="border-obito-grey" />
                 <p class="text-sm leading-[21px] text-center hover:underline text-obito-text-secondary">Pahami Terms &

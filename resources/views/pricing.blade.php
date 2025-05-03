@@ -94,10 +94,16 @@
                                     </p>
                                 </div>
                                 <hr class="border-obito-grey">
-                                <a href="{{ route('checkout', ['pricing' => $pricing]) }}"
-                                    class="w-full h-11 rounded-full py-[10px] px-5 gap-[10px] bg-obito-green text-center hover:drop-shadow-effect transition-all duration-300">
-                                    <span class="font-semibold text-white">Get Pro</span>
-                                </a>
+                                @if ($hasMembership)
+                                    <a class="w-full h-11 rounded-full py-[10px] px-5 gap-[10px] bg-obito-grey text-center">
+                                        <span class="font-semibold text-obito-text-grey">Membership ongoing</span>
+                                    </a>
+                                @else
+                                    <a href="{{ route('checkout', ['pricing' => $pricing]) }}"
+                                        class="w-full h-11 rounded-full py-[10px] px-5 gap-[10px] bg-obito-green text-center hover:drop-shadow-effect transition-all duration-300">
+                                        <span class="font-semibold text-white">Get Pro</span>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     @endif

@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Ramsey\Uuid\Uuid;
 use App\Models\Pricing;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class TransactionService
 {
@@ -120,5 +120,15 @@ class TransactionService
         return response()->json([
             'message' => 'Success'
         ], 200);
+    }
+
+    public function hasMembership()
+    {
+        $student = Auth::user();
+
+        return $student->transactions()
+            ->where('is_paid', true)
+            ->where('ended_at', '>=', now())
+            ->exists();
     }
 }

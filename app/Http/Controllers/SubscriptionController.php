@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
-
     public function __construct(private TransactionService $transactionService) {}
+
     public function mySubscription()
     {
         $studentId = Auth::user()->id;
