@@ -130,8 +130,8 @@
                         <img src="{{ asset('app/assets/images/icons/cup-green-fill.svg') }}" alt="icon"
                             class="size-[50px] shrink-0" />
                         <div>
-                            <h3 class="font-bold text-[18px] leading-[27px]">Pro Talent</h3>
-                            <p class="text-obito-text-secondary">3 months duration</p>
+                            <h3 class="font-bold text-[18px] leading-[27px]">{{ $pricing->name }}</h3>
+                            <p class="text-obito-text-secondary">{{ $pricing->duration }} months duration</p>
                         </div>
                     </div>
                     <div class="flex gap-2 items-center">
