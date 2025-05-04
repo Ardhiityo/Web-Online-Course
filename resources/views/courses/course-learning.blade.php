@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Course Learning - Obito Online Learning Platform')
+
 @section('content')
     <div class="flex h-screen">
         <aside class="flex flex-col bg-white border border-obito-grey">

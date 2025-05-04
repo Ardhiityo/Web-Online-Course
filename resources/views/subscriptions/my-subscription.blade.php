@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'My Subscription - Obito Online Learning Platform')
+
 @section('content')
     <x-nav-profile />
     <x-nav-menu />

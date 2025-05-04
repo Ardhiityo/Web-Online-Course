@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\CourseService;
 use App\Services\CategoryService;
-use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {

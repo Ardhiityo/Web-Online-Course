@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Success Join - Obito Online Learning Platform')
+
 @section('content')
     <div class="flex relative justify-center">
         <div id="backgroundImage" class="absolute top-0 right-0 left-0">

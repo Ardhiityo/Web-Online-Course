@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Subscription - Obito Online Learning Platform')
+
 @section('content')
     <div id="path" class="flex w-full bg-white border-b border-obito-grey py-[14px]">
         <div class="flex items-center w-full max-w-[1280px] px-[75px] mx-auto gap-5">

@@ -7,7 +7,7 @@
     <link href="{{ asset('app/css/output.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
-    <title>Obito Online Learning Platform - Learn Anytime, Anywhere</title>
+    <title>@yield('title')</title>
     <meta name="description"
         content="Obito is an innovative online learning platform that empowers students and professionals with high-quality, accessible courses.">
 

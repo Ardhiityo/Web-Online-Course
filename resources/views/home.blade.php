@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Home - Obito Online Learning Platform')
+
 @section('content')
     <x-nav-guest />
     <main class="flex flex-1 items-center py-[70px]">

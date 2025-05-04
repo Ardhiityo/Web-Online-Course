@@ -35,7 +35,7 @@ class CourseService
 
     public function getCourseDetailBySlug(string $slug)
     {
-        return Course::with(['category', 'courseBenefits', 'courseSections' => ['sectionContents']])
+        return Course::with(['category', 'courseBenefits', 'courseMentors', 'courseSections' => ['sectionContents']])
             ->where('slug', $slug)
             ->first()
             ->append(['total_course_section', 'total_section_content']);

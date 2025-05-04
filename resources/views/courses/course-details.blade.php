@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Course Details - Obito Online Learning Platform')
+
 @section('content')
     <x-nav-profile />
     <x-nav-menu />
@@ -25,7 +27,9 @@
                         class="flex items-center bg-custom-gradient gap-[6px] rounded-[14px] py-[6px] px-2 w-fit">
                         <img src="{{ asset('app/assets/images/icons/cup-white.svg') }}" class="flex w-5 shrink-0"
                             alt="icon">
-                        <span class="text-xs font-semibold text-white">This Course is Popular This Year</span>
+                        @if ($course->is_popular)
+                            <span class="text-xs font-semibold text-white">This Course is Popular This Year</span>
+                        @endif
                     </p>
                     <h1 class="font-bold text-[28px] leading-[42px]">{{ $course->name }}</h1>
                 </div>
@@ -125,68 +129,38 @@
                             class="flex flex-col w-full max-w-[900px] rounded-[20px] border border-obito-grey p-5 gap-4 bg-white">
                             <h3 class="text-lg font-semibold">Course Instructors</h3>
                             <div class="grid grid-cols-2 gap-5">
-                                <div
-                                    class="instructors-card flex flex-col rounded-[20px] border border-obito-grey p-5 gap-4 bg-white">
-                                    <div class="flex justify-between items-center">
-                                        <div class="flex gap-3 items-center">
-                                            <div class="flex w-[50px] h-[50px] shrink-0 rounded-full overflow-hidden">
-                                                <img src="{{ asset('app/assets/images/photos/anggaphoto.png') }}"
-                                                    class="object-cover w-full h-full" alt="photo">
+                                @foreach ($course->courseMentors as $courseMentor)
+                                    <div
+                                        class="instructors-card flex flex-col rounded-[20px] border border-obito-grey p-5 gap-4 bg-white">
+                                        <div class="flex justify-between items-center">
+                                            <div class="flex gap-3 items-center">
+                                                <div class="flex w-[50px] h-[50px] shrink-0 rounded-full overflow-hidden">
+                                                    <img src="{{ Storage::url($courseMentor->user->photo) }}"
+                                                        class="object-cover w-full h-full" alt="photo">
+                                                </div>
+                                                <div>
+                                                    <p class="font-semibold">{{ $courseMentor->user->name }}</p>
+                                                    <p class="text-sm text-obito-text-secondary">
+                                                        {{ $courseMentor->user->occupation }}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p class="font-semibold">Angga Risky</p>
-                                                <p class="text-sm text-obito-text-secondary">Full Stack Developer</p>
+                                            <div class="flex items-center">
+                                                <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
+                                                    class="flex w-5 shrink-0" alt="icon">
+                                                <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
+                                                    class="flex w-5 shrink-0" alt="icon">
+                                                <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
+                                                    class="flex w-5 shrink-0" alt="icon">
+                                                <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
+                                                    class="flex w-5 shrink-0" alt="icon">
+                                                <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
+                                                    class="flex w-5 shrink-0" alt="icon">
                                             </div>
                                         </div>
-                                        <div class="flex items-center">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                        </div>
+                                        <hr class="border-obito-grey">
+                                        <p class="leading-7">{{ $courseMentor->about }}</p>
                                     </div>
-                                    <hr class="border-obito-grey">
-                                    <p class="leading-7">Angga Risky Setiawan adalah seorang desainer UI berpengalaman
-                                        dengan lebih dari 7 tahun pengalaman di industri ini. Ia memiliki keahlian mendalam
-                                        dalam menciptakan.</p>
-                                </div>
-                                <div
-                                    class="instructors-card flex flex-col rounded-[20px] border border-obito-grey p-5 gap-4 bg-white">
-                                    <div class="flex justify-between items-center">
-                                        <div class="flex gap-3 items-center">
-                                            <div class="flex w-[50px] h-[50px] shrink-0 rounded-full overflow-hidden">
-                                                <img src="{{ asset('app/assets/images/photos/sami.png') }}"
-                                                    class="object-cover w-full h-full" alt="photo">
-                                            </div>
-                                            <div>
-                                                <p class="font-semibold">Angga Risky</p>
-                                                <p class="text-sm text-obito-text-secondary">Full Stack Developer</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                            <img src="{{ asset('app/assets/images/icons/Star 1.svg') }}"
-                                                class="flex w-5 shrink-0" alt="icon">
-                                        </div>
-                                    </div>
-                                    <hr class="border-obito-grey">
-                                    <p class="leading-7">Angga Risky Setiawan adalah seorang desainer UI berpengalaman
-                                        dengan lebih dari 7 tahun pengalaman di industri ini. Ia memiliki keahlian mendalam
-                                        dalam menciptakan.</p>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

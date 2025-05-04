@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Pricing - Obito Online Learning Platform')
+
 @section('content')
     <x-nav-guest />
     <main class="flex flex-col flex-1 justify-center">
