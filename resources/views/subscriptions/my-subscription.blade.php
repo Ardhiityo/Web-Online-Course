@@ -60,5 +60,5 @@
 @endsection
 
 @push('scripts')
-    <script src="js/dropdown-navbar.js"></script>
+    <script src="{{ asset('app/js/dropdown-navbar.js') }}"></script>
 @endpush

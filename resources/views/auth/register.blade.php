@@ -22,6 +22,9 @@
                         PHOTO</button>
                     <input id="hidden-input" type="file" accept="image/*" class="absolute opacity-0 -z-10" name="photo"
                         required>
+                    @error('photo')
+                        <p>{{ $message }}</p>
+                    @enderror
                 </label>
                 <div class="flex flex-col gap-2">
                     <p>Complete Name</p>
@@ -31,6 +34,9 @@
                             placeholder="Type your complete name" name="name">
                         <img src="{{ asset('app/assets/images/icons/profile.svg') }}"
                             class="flex absolute left-5 top-1/2 transform -translate-y-1/2 size-5 shrink-0" alt="icon">
+                        @error('name')
+                            <p>{{ $message }}</p>
+                        @enderror
                     </label>
                 </div>
                 <div class="flex flex-col gap-2">
@@ -41,6 +47,9 @@
                             placeholder="Type your occupation" name="occupation" required>
                         <img src="{{ asset('app/assets/images/icons/briefcase.svg') }}"
                             class="flex absolute left-5 top-1/2 transform -translate-y-1/2 size-5 shrink-0" alt="icon">
+                        @error('occupation')
+                            <p>{{ $message }}</p>
+                        @enderror
                     </label>
                 </div>
                 <div class="flex flex-col gap-2">
@@ -51,6 +60,9 @@
                             placeholder="Type your valid email address" name="email">
                         <img src="{{ asset('app/assets/images/icons/sms.svg') }}"
                             class="flex absolute left-5 top-1/2 transform -translate-y-1/2 size-5 shrink-0" alt="icon">
+                        @error('email')
+                            <p>{{ $message }}</p>
+                        @enderror
                     </label>
                 </div>
                 <div class="flex flex-col gap-2">
@@ -61,6 +73,9 @@
                             placeholder="Type your password" name="password">
                         <img src="{{ asset('app/assets/images/icons/shield-security.svg') }}"
                             class="flex absolute left-5 top-1/2 transform -translate-y-1/2 size-5 shrink-0" alt="icon">
+                        @error('password')
+                            <p>{{ $message }}</p>
+                        @enderror
                     </label>
                 </div>
                 <div class="flex flex-col gap-2">

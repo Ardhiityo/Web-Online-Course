@@ -16,6 +16,9 @@
                             placeholder="Type your valid email address" name="email">
                         <img src="{{ asset('app/assets/images/icons/sms.svg') }}"
                             class="flex absolute left-5 top-1/2 transform -translate-y-1/2 size-5 shrink-0" alt="icon">
+                        @error('email')
+                            <p>{{ $message }}</p>
+                        @enderror
                     </label>
                 </div>
                 <div class="flex flex-col gap-3">
