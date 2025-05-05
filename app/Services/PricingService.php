@@ -12,4 +12,9 @@ class PricingService
             ->take(2)
             ->get();
     }
+
+    public function getPricingById($id)
+    {
+        return Pricing::find($id);
+    }
 }

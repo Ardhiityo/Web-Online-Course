@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Course;
 use App\Models\Category;
+use App\Models\CourseSection;
+use App\Models\SectionContent;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Interfaces\CourseSectionInterface;
 use App\Services\Interfaces\SectionContentInterface;
@@ -43,9 +45,13 @@ class CourseService
 
     public function getCourseBySlug(string $slug)
     {
-        return Course::with(['category', 'courseSections' => ['sectionContents']])
-            ->where('slug', $slug)
-            ->first();
+        try {
+            return Course::with(['category', 'courseSections' => ['sectionContents']])
+                ->where('slug', $slug)
+                ->firstOrFail();
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
     public function studentJoinCourse(string $slug)
@@ -80,8 +86,6 @@ class CourseService
     {
         $course = $this->getCourseDetailBySlug($slug);
 
-        if (!$course) return abort(404);
-
         $this->studentJoinCourse($slug);
 
         $courseSection = $course->courseSections()->first();
@@ -95,72 +99,61 @@ class CourseService
         return compact('course', 'courseSection', 'sectionContent');
     }
 
-    public function learning(string $slug, int $courseSectionId, int $sectionContentId)
+    public function learning(string $slug, CourseSection $courseSection, SectionContent $sectionContent)
     {
         $course = $this->getCourseBySlug($slug);
 
-        if (!$course) return abort(404);
-
-        $latestCourseSectionId = $course->courseSections()->latest()->first();
-
-        $section = $course->courseSections()->find($courseSectionId);
-
-        if (!$section) return abort(404);
-
-        $content = $section->sectionContents()->find($sectionContentId);
-
-        if (!$content) return abort(404);
-
-        $latestSectionContentId = $latestCourseSectionId->sectionContents()->latest()->first();
-
-        $sectionContentId == $latestSectionContentId->id ?
-            session()->put('completed', true) : session()->put('completed', false);
+        $content = $sectionContent;
 
         return compact('course', 'content');
     }
 
-    public function nextLearning(string $slug, int $courseSectionId, int $sectionContentId)
+    public function learningFinished($slug, $sectionContentId)
+    {
+        $course = $this->getCourseBySlug($slug);
+
+        $latestCourseSectionId = $course->courseSections()->latest()->first();
+
+        $latestSectionContentId = $latestCourseSectionId->sectionContents()->latest()->first();
+
+        return $sectionContentId == $latestSectionContentId->id ?
+            session()->put('completed', true) : session()->put('completed', false);
+    }
+
+    public function nextLearning(string $slug, CourseSection $courseSection, SectionContent $sectionContent)
     {
         //Ambil Course berdasarkan slug parameter
         $course = $this->getCourseBySlug($slug);
 
-        // Ambil course section berdasarkan courseId yang sekarang
-        $section = $course->courseSections()->find($courseSectionId);
+        $allCourseSectionId = $course->courseSections()->pluck('id')->toArray();
 
         // Ambil semua id section content berdasarkan course section id, dan kembalikan dalam kumpulan array
-        $allSectionContentId = $section->sectionContents()->pluck('id')->toArray();
+        $allSectionContentId = $courseSection->sectionContents()->pluck('id')->toArray();
 
         // Cek apakah section content id yang sekarang ada di dalam array kumpulan section content id
-        if (in_array($sectionContentId, $allSectionContentId)) {
+        if (in_array($sectionContent->id, $allSectionContentId)) {
 
             // Jika ada, ambil index dari section content id yang sekarang
-            $currentIndex = array_search($sectionContentId,  $allSectionContentId);
+            $currentIndex = array_search($sectionContent->id,  $allSectionContentId);
 
             // Cek apakah ada section content id selanjutnya
             $nextContentId = $allSectionContentId[$currentIndex + 1] ?? null;
 
             // Jika ada, ambil section content id selanjutnya
             if ($nextContentId) {
-                $content = $section->sectionContents()->find($nextContentId);
+                try {
+                    $content = $courseSection->sectionContents()->findOrFail($nextContentId);
+                    $slug = $course->slug;
+                    $nextSection = $courseSection->id;
+                    $nextContent = $content->id;
 
-                // Jika ada, kembalikan ke halaman kursus dengan section content id selanjutnya
-                if ($content) {
-
-                    // Kembalikan ke halaman kursus dengan section content id selanjutnya
-                    return redirect()->route('course-learning', [
-                        'slug' => $course->slug,
-                        'courseSectionId' => $section->id,
-                        'sectionContentId' => $content->id
-                    ]);
+                    return compact('slug', 'nextSection', 'nextContent');
+                } catch (\Throwable $th) {
+                    return abort(404);
                 }
-                // Jika tidak ada section konten selanjutnya, cek course section selanjutnya
             } else {
-                // Ambil semua course section id berdasarkan course id, dan kembalikan dalam kumpulan array
-                $allCourseSectionId = $this->courseSectionInterface
-                    ->getAllCourseSectionIdByCourseIdToArray($course->id);
-
                 // Cek apakah course section id yang sekarang ada di dalam array kumpulan course section id
-                $currentSectionIndex = array_search($courseSectionId, $allCourseSectionId);
+                $currentSectionIndex = array_search($courseSection->id, $allCourseSectionId);
 
                 // Jika ada, ambil index dari course section id yang sekarang
                 $nextSectionId = $allCourseSectionId[$currentSectionIndex + 1] ?? null;
@@ -171,21 +164,18 @@ class CourseService
                     $section = $this->courseSectionInterface
                         ->getCourseSectionById($nextSectionId);
                     // Ambil section content id pertama dari course section id selanjutnya
-                    $content = $this->sectionContentInterface
-                        ->getSectionContentByCourseSectionId($section->id);
+                    $content = $section->sectionContents()->first();
 
-                    // Jika ada, kembalikan ke halaman kursus dengan section content id pertama dari course section id selanjutnya
-                    return redirect()->route('course-learning', [
-                        'slug' => $course->slug,
-                        'courseSectionId' => $section->id,
-                        'sectionContentId' => $content->id
-                    ]);
+                    $slug = $course->slug;
+                    $nextSection = $section->id;
+                    $nextContent = $content->id;
+
+                    return compact('slug', 'nextSection', 'nextContent');
+                } else {
+                    return false;
                 }
             }
         }
-
-        // Jika tidak ada section selanjutnya, maka kembalikan ke halaman kursus selesai
-        return redirect()->route('course-learning-finished', ['slug' => $slug]);
     }
 
     public function searchCourse(string $keywords)

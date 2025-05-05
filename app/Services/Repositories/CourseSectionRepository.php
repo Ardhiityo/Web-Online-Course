@@ -12,7 +12,7 @@ class CourseSectionRepository implements CourseSectionInterface
         //
     }
 
-    public function getAllCourseSectionIdByCourseIdToArray(int $courseId): array
+    public function getAllCourseSectionIdByCourseId(int $courseId): array
     {
         return CourseSection::where('course_id', $courseId)
             ->pluck('id')->toArray();
@@ -20,6 +20,10 @@ class CourseSectionRepository implements CourseSectionInterface
 
     public function getCourseSectionById(int $courseSectionId)
     {
-        return CourseSection::find($courseSectionId);
+        try {
+            return CourseSection::findOrFail($courseSectionId);
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 }

@@ -21,7 +21,7 @@ class MidtransService
             $snapToken = Snap::getSnapToken($params);
 
             return response()->json([
-                'snap_token' => $snapToken
+                'snap_token' => $snapToken,
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

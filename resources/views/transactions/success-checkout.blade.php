@@ -9,7 +9,7 @@
                 <div class="rounded-full !w-fit mx-auto py-2 px-[14px] bg-obito-light-green flex items-center gap-[6px]">
                     <img src="{{ asset('app/assets/images/icons/crown-green.svg') }}" alt="icon"
                         class="size-[20px] shrink-0" />
-                    <p class="font-bold text-sm leading-[21px]">{{ strtoupper($transaction->pricing->name) }} UNLOCKED</p>
+                    <p class="font-bold text-sm leading-[21px]">{{ strtoupper($pricing->name) }} UNLOCKED</p>
                 </div>
                 <h1 class="font-bold text-[28px] leading-[42px] text-center">Payment Successful</h1>
                 <p class="text-center leading-[28px] text-obito-text-secondary">Anda telah memiliki akses kelas materi
@@ -24,12 +24,12 @@
                 <div class="flex flex-col gap-[10px]">
                     <h2 class="font-bold">
                         Subscription Active: <br />
-                        {{ $transaction->pricing->name }} Talent Digital Era 2025
+                        {{ $pricing->name }} Talent Digital Era 2025
                     </h2>
                     <div class="flex items-center gap-[6px]">
                         <img src="{{ asset('app/assets/images/icons/calendar-green.svg') }}" alt="icon"
                             class="size-[20px] shrink-0" />
-                        <p class="text-obito-text-secondary text-sm leading-[21px]">{{ $transaction->pricing->duration }}
+                        <p class="text-obito-text-secondary text-sm leading-[21px]">{{ $pricing->duration }}
                             Months Access</p>
                     </div>
                     <div class="flex items-center gap-[6px]">

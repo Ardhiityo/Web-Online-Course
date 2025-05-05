@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\CourseSection;
+use App\Models\SectionContent;
 use App\Services\CourseService;
 use App\Services\CategoryService;
 
@@ -43,31 +45,32 @@ class CourseController extends Controller
         return view('success-join', $course);
     }
 
-    public function learning($slug, $courseSectionId, $sectionContentId)
+    public function learning($slug, CourseSection $courseSection, SectionContent $sectionContent)
     {
         $learning = $this->courseService->learning(
             $slug,
-            $courseSectionId,
-            $sectionContentId
+            $courseSection,
+            $sectionContent
         );
+
+        $nextLearning = $this->courseService->nextLearning(
+            $slug,
+            $courseSection,
+            $sectionContent
+        );
+
+        $this->courseService->learningFinished($slug, $sectionContent->id);
+
+        if ($nextLearning) {
+            return view('courses.course-learning', $learning, $nextLearning);
+        }
 
         return view('courses.course-learning', $learning);
-    }
-
-    public function nextLearning($slug, $courseSectionId, $sectionContentId)
-    {
-        return $this->courseService->nextLearning(
-            $slug,
-            $courseSectionId,
-            $sectionContentId
-        );
     }
 
     public function learningFinished(string $slug)
     {
         $course = $this->courseService->getCourseDetailBySlug($slug);
-
-        if (!$course) return abort(404);
 
         return view('courses.course-learning-finished', compact('course'));
     }

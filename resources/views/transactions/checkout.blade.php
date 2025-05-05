@@ -174,7 +174,7 @@
         function handlePayment(data) {
             snap.pay(data.snap_token, {
                 onSuccess: function(result) {
-                    window.location.href = `/checkout/success/${result.order_id}`;
+                    window.location.href = '{{ route('checkout.success') }}';
                 },
                 onPending: function(result) {
                     alert('Pembayaran pending');
@@ -194,7 +194,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
                     },
                     body: JSON.stringify({
                         _token: '{{ csrf_token() }}',

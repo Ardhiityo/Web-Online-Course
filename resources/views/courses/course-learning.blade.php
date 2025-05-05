@@ -46,8 +46,8 @@
                                             <a
                                                 href="{{ route('course-learning', [
                                                     'slug' => $course->slug,
-                                                    'courseSectionId' => $courseSection->id,
-                                                    'sectionContentId' => $sectionContent->id,
+                                                    'courseSection' => $courseSection->id,
+                                                    'sectionContent' => $sectionContent->id,
                                                 ]) }}">
                                                 <div
                                                     class="px-4 group-[&.active]:bg-obito-black group-[&.active]:border-transparent group-[&.active]:text-white py-[10px] rounded-full border border-obito-grey group-hover:bg-obito-black transition-all duration-300">
@@ -84,19 +84,17 @@
                                 <span class="font-semibold">Ask Mentor</span>
                             </a>
                             @if (session()->get('completed'))
-                                <a href="{{ route('course-learning-next', [
+                                <a href="{{ route('course-learning-finished', [
                                     'slug' => $course->slug,
-                                    'courseSectionId' => request('courseSectionId'),
-                                    'sectionContentId' => request('sectionContentId'),
                                 ]) }}"
                                     class="rounded-full border bg-obito-green text-white px-5 py-[10px] hover:drop-shadow-effect transition-all duration-300">
                                     <span class="font-semibold">Completed</span>
                                 </a>
                             @else
-                                <a href="{{ route('course-learning-next', [
+                                <a href="{{ route('course-learning', [
                                     'slug' => $course->slug,
-                                    'courseSectionId' => request('courseSectionId'),
-                                    'sectionContentId' => request('sectionContentId'),
+                                    'courseSection' => $nextSection,
+                                    'sectionContent' => $nextContent,
                                 ]) }}"
                                     class="rounded-full border bg-obito-green text-white px-5 py-[10px] hover:drop-shadow-effect transition-all duration-300">
                                     <span class="font-semibold">Next Lesson</span>
@@ -110,8 +108,24 @@
     </div>
 @endsection
 
+@push('styles')
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/monokai-sublime.min.css">
+@endpush
+
 @push('scripts')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('app/js/accordion.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <!-- Tambahkan bahasa yang Anda butuhkan -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            hljs.highlightAll();
+        });
+    </script>
 @endpush

@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Pricing;
 use Illuminate\Http\Request;
+use App\Services\PricingService;
 use App\Services\CategoryService;
 use App\Services\MidtransService;
 use App\Services\TransactionService;
 use App\Http\Requests\CheckoutStoreRequest;
+use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
 {
     public function __construct(
         private MidtransService $midtransService,
         private TransactionService $transactionService,
-        private CategoryService $categoryService
+        private CategoryService $categoryService,
+        private PricingService $pricingService,
     ) {}
 
     public function checkoutStore(CheckoutStoreRequest $request)
@@ -22,6 +25,8 @@ class TransactionController extends Controller
         $data = $request->validated();
 
         $params = $this->transactionService->createParams($data['pricing_id']);
+
+        Session::put('pricing_id', $data['pricing_id']);
 
         return $this->midtransService->getSnapToken($params);
     }
@@ -38,14 +43,16 @@ class TransactionController extends Controller
         return view("transactions.checkout", compact('pricing', 'hasMembership'));
     }
 
-    public function success($orderId)
+    public function success()
     {
-        $transaction = $this->transactionService->getTransactionByBookingTrxId($orderId);
+        $pricingId = Session::get('pricing_id');
 
-        if (is_null($transaction)) return abort(404);
+        $pricing = $this->pricingService->getPricingById($pricingId);
+
+        if (is_null($pricing)) return abort(404);
 
         $slug = $this->categoryService->getFirstCategory()->slug;
 
-        return view('transactions.success-checkout', compact('transaction', 'slug'));
+        return view('transactions.success-checkout', compact('pricing', 'slug'));
     }
 }

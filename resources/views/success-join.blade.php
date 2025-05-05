@@ -47,8 +47,8 @@
                 </a>
                 <a href="{{ route('course-learning', [
                     'slug' => $course->slug,
-                    'courseSectionId' => $courseSection->id,
-                    'sectionContentId' => $sectionContent->id,
+                    'courseSection' => $courseSection->id,
+                    'sectionContent' => $sectionContent->id,
                 ]) }}"
                     class="text-white rounded-full py-[10px] flex justify-center items-center bg-obito-green hover:drop-shadow-effect transition-all duration-300">
                     <span class="font-semibold">Start Learning</span>
