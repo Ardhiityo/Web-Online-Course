@@ -25,7 +25,6 @@ class TransactionController extends Controller
         $data = $request->validated();
 
         $params = $this->transactionService->createParams($data['pricing_id']);
-
         Session::put('pricing_id', $data['pricing_id']);
 
         return $this->midtransService->getSnapToken($params);
@@ -48,9 +47,6 @@ class TransactionController extends Controller
         $pricingId = Session::get('pricing_id');
 
         $pricing = $this->pricingService->getPricingById($pricingId);
-
-        if (is_null($pricing)) return abort(404);
-
         $slug = $this->categoryService->getFirstCategory()->slug;
 
         return view('transactions.success-checkout', compact('pricing', 'slug'));

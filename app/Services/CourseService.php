@@ -27,19 +27,20 @@ class CourseService
 
     public function getCoursesByCategory(string $slug)
     {
-        $category = Category::where('slug', $slug)->first();
-
-        return Course::with('category')
-            ->where('category_id', $category->id)
-            ->get()
-            ->append(['total_course_section', 'total_section_content']);
+        try {
+            $category = Category::where('slug', $slug)->firstOrFail();
+            return Course::with('category')
+                ->where('category_id', $category->id)
+                ->get()
+                ->append(['total_course_section', 'total_section_content']);
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
-    public function getCourseDetailBySlug(string $slug)
+    public function getCourseDetails(Course $course)
     {
-        return Course::with(['category', 'courseBenefits', 'courseMentors', 'courseSections' => ['sectionContents']])
-            ->where('slug', $slug)
-            ->first()
+        return $course->load(['category', 'courseBenefits', 'courseMentors', 'courseSections' => ['sectionContents']])
             ->append(['total_course_section', 'total_section_content']);
     }
 
@@ -54,10 +55,8 @@ class CourseService
         }
     }
 
-    public function studentJoinCourse(string $slug)
+    public function studentJoinCourse(Course $course)
     {
-        $course = Course::where('slug', $slug)->first();
-
         $student = Auth::user();
 
         $studentHasCourse = $student->courses()
@@ -82,36 +81,21 @@ class CourseService
         return compact('courseSection', 'sectionContent');
     }
 
-    public function successJoin($slug)
+    public function successJoin(Course $course)
     {
-        $course = $this->getCourseDetailBySlug($slug);
+        try {
+            $this->studentJoinCourse($course);
+            $courseSection = $course->courseSections()->firstOrFail();
+            $sectionContent = $courseSection->sectionContents()->firstOrFail();
 
-        $this->studentJoinCourse($slug);
-
-        $courseSection = $course->courseSections()->first();
-
-        if (!$courseSection) return abort(404);
-
-        $sectionContent = $courseSection->sectionContents()->first();
-
-        if (!$sectionContent) return abort(404);
-
-        return compact('course', 'courseSection', 'sectionContent');
+            return compact('course', 'courseSection', 'sectionContent');
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 
-    public function learning(string $slug, CourseSection $courseSection, SectionContent $sectionContent)
+    public function learningFinished(Course $course, $sectionContentId)
     {
-        $course = $this->getCourseBySlug($slug);
-
-        $content = $sectionContent;
-
-        return compact('course', 'content');
-    }
-
-    public function learningFinished($slug, $sectionContentId)
-    {
-        $course = $this->getCourseBySlug($slug);
-
         $latestCourseSectionId = $course->courseSections()->latest()->first();
 
         $latestSectionContentId = $latestCourseSectionId->sectionContents()->latest()->first();
@@ -120,11 +104,8 @@ class CourseService
             session()->put('completed', true) : session()->put('completed', false);
     }
 
-    public function nextLearning(string $slug, CourseSection $courseSection, SectionContent $sectionContent)
+    public function nextLearning(Course $course, CourseSection $courseSection, SectionContent $sectionContent)
     {
-        //Ambil Course berdasarkan slug parameter
-        $course = $this->getCourseBySlug($slug);
-
         $allCourseSectionId = $course->courseSections()->pluck('id')->toArray();
 
         // Ambil semua id section content berdasarkan course section id, dan kembalikan dalam kumpulan array
@@ -187,6 +168,6 @@ class CourseService
             ->append([
                 'total_course_section',
                 'total_section_content'
-            ]);;
+            ]);
     }
 }

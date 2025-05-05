@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\CourseSection;
 use App\Models\SectionContent;
@@ -31,46 +32,42 @@ class CourseController extends Controller
         return view("catalog", compact("popularCourses", "categories", "courses"));
     }
 
-    public function courseDetails($slug)
+    public function courseDetails(Course $course)
     {
-        $course = $this->courseService->getCourseDetailBySlug($slug);
+        $course = $this->courseService->getCourseDetails($course);
 
         return view("courses.course-details", compact('course'));
     }
 
-    public function successJoin($slug)
+    public function successJoin(Course $course)
     {
-        $course = $this->courseService->successJoin($slug);
+        $course = $this->courseService->successJoin($course);
 
         return view('success-join', $course);
     }
 
-    public function learning($slug, CourseSection $courseSection, SectionContent $sectionContent)
+    public function learning(Course $course, CourseSection $courseSection, SectionContent $sectionContent)
     {
-        $learning = $this->courseService->learning(
-            $slug,
-            $courseSection,
-            $sectionContent
-        );
-
         $nextLearning = $this->courseService->nextLearning(
-            $slug,
+            $course,
             $courseSection,
             $sectionContent
         );
 
-        $this->courseService->learningFinished($slug, $sectionContent->id);
+        $this->courseService->learningFinished($course, $sectionContent->id);
+
+        $currentLearning = compact('course',  'sectionContent');
 
         if ($nextLearning) {
-            return view('courses.course-learning', $learning, $nextLearning);
+            return view('courses.course-learning',  $currentLearning, $nextLearning);
         }
 
-        return view('courses.course-learning', $learning);
+        return view('courses.course-learning', $currentLearning);
     }
 
-    public function learningFinished(string $slug)
+    public function learningFinished(Course $course)
     {
-        $course = $this->courseService->getCourseDetailBySlug($slug);
+        $course = $this->courseService->getCourseDetails($course);
 
         return view('courses.course-learning-finished', compact('course'));
     }

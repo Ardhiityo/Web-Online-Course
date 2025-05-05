@@ -15,6 +15,10 @@ class PricingService
 
     public function getPricingById($id)
     {
-        return Pricing::find($id);
+        try {
+            return Pricing::findOrFail($id);
+        } catch (\Throwable $th) {
+            return abort(404);
+        }
     }
 }

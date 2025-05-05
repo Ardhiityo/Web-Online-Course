@@ -30,10 +30,10 @@ Route::middleware(['auth', 'role:student'])->group(function () {
             ->group(function () {
                 Route::get('/',  'catalog')->name('index');
                 Route::get('/search',  'search')->name('search');
-                Route::get('/details/{slug}',  'courseDetails')->name('details');
-                Route::get('/success-join/{slug}',  'successJoin')->name('success-join');
-                Route::get('/learning/{slug}/{courseSection}/{sectionContent}',  'learning')->name('learning');
-                Route::get('/learning/{slug}/finished',  'learningFinished')->name('learning-finished');
+                Route::get('/details/{course:slug}',  'courseDetails')->name('details');
+                Route::get('/success-join/{course:slug}',  'successJoin')->name('success-join');
+                Route::get('/learning/{course:slug}/{courseSection}/{sectionContent}',  'learning')->name('learning');
+                Route::get('/learning/{course:slug}/finished',  'learningFinished')->name('learning-finished');
             });
     });
 });

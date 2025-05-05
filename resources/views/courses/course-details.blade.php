@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="flex gap-3 items-center">
-                    <a href="{{ route('course.success-join', ['slug' => $course->slug]) }}"
+                    <a href="{{ route('course.success-join', ['course' => $course->slug]) }}"
                         class="rounded-full py-[10px] px-5 gap-[10px] bg-obito-green hover:drop-shadow-effect transition-all duration-300">
                         <span class="font-semibold text-white">Start Learning Now</span>
                     </a>

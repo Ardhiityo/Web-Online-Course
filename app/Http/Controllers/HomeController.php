@@ -12,7 +12,8 @@ class HomeController extends Controller
     public function __construct(
         private CourseService $courseService,
         private CategoryService $categoryService,
-        private TransactionService $transactionService
+        private TransactionService $transactionService,
+        private PricingService $pricingService
     ) {}
 
     public function index()
@@ -20,10 +21,9 @@ class HomeController extends Controller
         return view("home");
     }
 
-    public function pricing(PricingService $pricingService)
+    public function pricing()
     {
-        $pricings = $pricingService->getAllPricing();
-
+        $pricings = $this->pricingService->getAllPricing();
         $hasMembership = $this->transactionService->hasMembership();
 
         return view("pricing", compact("pricings", "hasMembership"));

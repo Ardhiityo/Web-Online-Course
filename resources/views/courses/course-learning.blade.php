@@ -110,22 +110,32 @@
 
 @push('styles')
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/monokai-sublime.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
 @endpush
 
 @push('scripts')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('app/js/accordion.js') }}"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-    <!-- Tambahkan bahasa yang Anda butuhkan -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/php.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            hljs.highlightAll();
+        document.addEventListener('DOMContentLoaded', () => {
+            const pre = document.querySelectorAll('pre');
+            pre.forEach((pre) => {
+                const findCodeElement = pre.querySelector('code');
+                if (!findCodeElement) {
+                    const code = document.createElement('code');
+                    code.textContent = pre.textContent;
+                    pre.appendChild(code);
+                    console.log(pre.childNodes);
+                    pre.childNodes.forEach((node) => {
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            node.remove();
+                        }
+                    });
+                }
+                hljs.highlightAll();
+            });
         });
     </script>
 @endpush
