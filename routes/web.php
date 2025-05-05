@@ -10,21 +10,31 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
-    Route::post('/checkout', [TransactionController::class, 'checkoutStore'])->name('checkout.store');
-    Route::get('/checkout/my-subscriptions', [SubscriptionController::class, 'mySubscription'])->name('checkout.my-subscription');
-    Route::get('/checkout/subscription-details/{transaction}', [SubscriptionController::class, 'subscriptionDetail'])->name('checkout.subscription-details');
-    Route::get('/checkout/success', [TransactionController::class, 'success'])->name('checkout.success');
-    Route::get('/checkout/{pricing}', [TransactionController::class, 'checkout'])->name('checkout');
+
+    Route::prefix('checkout')->name('checkout.')->group(function () {
+        Route::controller(SubscriptionController::class)->group(function () {
+            Route::get('/my-subscriptions', 'mySubscription')->name('my-subscription');
+            Route::get('/subscription-details/{transaction}',  'subscriptionDetail')->name('subscription-details');
+        });
+
+        Route::controller(TransactionController::class)->group(function () {
+            Route::post('/',  'checkoutStore')->name('store');
+            Route::get('/success',  'success')->name('success');
+            Route::get('/{pricing}',  'checkout')->name('details');
+        });
+    });
 
     Route::middleware('membership')->group(function () {
-        Route::get('/course', [CourseController::class, 'catalog'])->name('course');
-        Route::get('/course/search', [CourseController::class, 'search'])->name('course-search');
-        Route::get('/course/details/{slug}', [CourseController::class, 'courseDetails'])->name('course-details');
-        Route::get('/course/success-join/{slug}', [CourseController::class, 'successJoin'])->name('course-success-join');
-        Route::get('/course/learning/{slug}/{courseSection}/{sectionContent}', [CourseController::class, 'learning'])
-            ->name('course-learning');
-        Route::get('/course/learning/{slug}/finished', [CourseController::class, 'learningFinished'])
-            ->name('course-learning-finished');
+        Route::prefix('course')->name('course.')
+            ->controller(CourseController::class)
+            ->group(function () {
+                Route::get('/',  'catalog')->name('index');
+                Route::get('/search',  'search')->name('search');
+                Route::get('/details/{slug}',  'courseDetails')->name('details');
+                Route::get('/success-join/{slug}',  'successJoin')->name('success-join');
+                Route::get('/learning/{slug}/{courseSection}/{sectionContent}',  'learning')->name('learning');
+                Route::get('/learning/{slug}/finished',  'learningFinished')->name('learning-finished');
+            });
     });
 });
 

@@ -4,7 +4,7 @@
             <a href="{{ route('home') }}" class="flex shrink-0">
                 <img src="{{ asset('app/assets/images/logos/logo.svg') }}" class="flex shrink-0" alt="logo">
             </a>
-            <form action="{{ route('course-search') }}" class="relative">
+            <form action="{{ route('course.search') }}" class="relative">
                 <label class="group">
                     <input type="text" name="keywords"
                         class="appearance-none outline-none ring-1 ring-obito-grey rounded-full w-[400px]  py-[14px] px-5 bg-white font-bold placeholder:font-normal placeholder:text-obito-text-secondary group-focus-within:ring-obito-green transition-all duration-300 pr-[50px]"
@@ -46,7 +46,7 @@
                     class="absolute top-full right-0 mt-[7px] w-[170px] h-fit bg-white rounded-xl border border-obito-grey py-4 px-5 shadow-[0px_10px_30px_0px_#B8B8B840] z-10 hidden">
                     <ul class="flex flex-col gap-[14px]">
                         <li class="transition-all duration-300 hover:text-obito-green">
-                            <a href="{{ route('course') }}">My Courses</a>
+                            <a href="{{ route('course.index') }}">My Courses</a>
                         </li>
                         <li class="transition-all duration-300 hover:text-obito-green">
                             <a href="#">Certificates</a>

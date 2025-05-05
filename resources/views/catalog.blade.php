@@ -50,7 +50,7 @@
             <h1 class="font-bold text-[22px] leading-[33px]">Course Catalog</h1>
             <div id="tabs-container" class="flex gap-3 items-center">
                 @foreach ($categories as $category)
-                    <a href="{{ route('course', ['catalog' => $category->slug]) }}"
+                    <a href="{{ route('course.index', ['catalog' => $category->slug]) }}"
                         class="tab-btn group {{ $category->slug == request('catalog') ? 'active' : '' }}"
                         data-target="{{ $category->slug }}">
                         <p

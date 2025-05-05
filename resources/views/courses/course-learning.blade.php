@@ -8,7 +8,7 @@
             <div class="w-[260px] pb-[20px] h-[280px] px-5 pt-5 flex flex-col gap-5">
                 <ul>
                     <li>
-                        <a href="{{ route('course') }}">
+                        <a href="{{ route('course.index') }}">
                             <div
                                 class="flex items-center gap-2 py-[10px] px-[14px] rounded-full border border-obito-grey bg-white hover:border-obito-green transition-all duration-300">
                                 <img src="{{ asset('app/assets/images/icons/home-trend-up.svg') }}" alt="icon"
@@ -44,7 +44,7 @@
                                         <li
                                             class="group {{ request()->is("course/learning/$course->slug/$courseSection->id/$sectionContent->id") ? 'active' : '' }}">
                                             <a
-                                                href="{{ route('course-learning', [
+                                                href="{{ route('course.learning', [
                                                     'slug' => $course->slug,
                                                     'courseSection' => $courseSection->id,
                                                     'sectionContent' => $sectionContent->id,
@@ -84,14 +84,14 @@
                                 <span class="font-semibold">Ask Mentor</span>
                             </a>
                             @if (session()->get('completed'))
-                                <a href="{{ route('course-learning-finished', [
+                                <a href="{{ route('course.learning-finished', [
                                     'slug' => $course->slug,
                                 ]) }}"
                                     class="rounded-full border bg-obito-green text-white px-5 py-[10px] hover:drop-shadow-effect transition-all duration-300">
                                     <span class="font-semibold">Completed</span>
                                 </a>
                             @else
-                                <a href="{{ route('course-learning', [
+                                <a href="{{ route('course.learning', [
                                     'slug' => $course->slug,
                                     'courseSection' => $nextSection,
                                     'sectionContent' => $nextContent,

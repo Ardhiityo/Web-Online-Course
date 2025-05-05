@@ -14,8 +14,8 @@
                     <a href="{{ route('pricing') }}">Pricing</a>
                 </li>
                 <li
-                    class="transition-all duration-300 {{ request()->routeIs('course') ? 'font-semibold' : '' }} hover:font-semibold">
-                    <a href="{{ route('course') }}">Courses</a>
+                    class="transition-all duration-300 {{ request()->routeIs('course.index') ? 'font-semibold' : '' }} hover:font-semibold">
+                    <a href="{{ route('course.index') }}">Courses</a>
                 </li>
                 <li class="transition-all duration-300 hover:font-semibold">
                     <a href="#">Testimonials</a>

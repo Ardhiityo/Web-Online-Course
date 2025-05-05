@@ -12,7 +12,7 @@
                 <span class="text-sm font-bold">GROW CAREER</span>
             </p>
             <h1 class="font-bold text-[28px] leading-[42px] text-center">Explore Our Greatest Courses</h1>
-            <form action="{{ route('course-search') }}" class="relative">
+            <form action="{{ route('course.search') }}" class="relative">
                 <label class="group">
                     <input type="text" name="keywords"
                         class="appearance-none outline-none ring-1 ring-obito-grey rounded-full w-[550px] py-[14px] px-5 bg-white font-bold placeholder:font-normal placeholder:text-obito-text-secondary group-focus-within:ring-obito-green transition-all duration-300 pr-[50px]"

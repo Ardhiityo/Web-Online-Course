@@ -45,7 +45,7 @@
                     class="border border-obito-grey rounded-full py-[10px] flex justify-center items-center hover:border-obito-green transition-all duration-300">
                     <span class="font-semibold">Get Guidelines</span>
                 </a>
-                <a href="{{ route('course-learning', [
+                <a href="{{ route('course.learning', [
                     'slug' => $course->slug,
                     'courseSection' => $courseSection->id,
                     'sectionContent' => $sectionContent->id,

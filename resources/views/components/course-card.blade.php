@@ -1,4 +1,4 @@
-<a href="{{ route('course-details', $course->slug) }}" class="card">
+<a href="{{ route('course.details', $course->slug) }}" class="card">
     <div
         class="course-card flex flex-col rounded-[20px] border border-obito-grey hover:border-obito-green transition-all duration-300 bg-white overflow-hidden">
         <div class="thumbnail-container p-[10px]">

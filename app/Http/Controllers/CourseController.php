@@ -21,7 +21,7 @@ class CourseController extends Controller
             $courses = $this->courseService->getCoursesByCategory($slug);
         } else {
             $category = $this->categoryService->getFirstCategory();
-            return redirect()->route('course', ['catalog' => $category->slug]);
+            return redirect()->route('course.index', ['catalog' => $category->slug]);
         }
 
         $popularCourses = $this->courseService->getPopularCourses();
