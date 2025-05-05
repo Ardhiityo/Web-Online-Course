@@ -46,7 +46,7 @@
                     <span class="font-semibold">Get Guidelines</span>
                 </a>
                 <a href="{{ route('course.learning', [
-                    'slug' => $course->slug,
+                    'course' => $course->slug,
                     'courseSection' => $courseSection->id,
                     'sectionContent' => $sectionContent->id,
                 ]) }}"

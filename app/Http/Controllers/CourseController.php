@@ -56,7 +56,8 @@ class CourseController extends Controller
 
         $this->courseService->learningFinished($course, $sectionContent->id);
 
-        $currentLearning = compact('course',  'sectionContent');
+        $content = $sectionContent;
+        $currentLearning = compact('course',  'content');
 
         if ($nextLearning) {
             return view('courses.course-learning',  $currentLearning, $nextLearning);

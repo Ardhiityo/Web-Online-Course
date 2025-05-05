@@ -45,7 +45,7 @@
                                             class="group {{ request()->is("course/learning/$course->slug/$courseSection->id/$sectionContent->id") ? 'active' : '' }}">
                                             <a
                                                 href="{{ route('course.learning', [
-                                                    'slug' => $course->slug,
+                                                    'course' => $course->slug,
                                                     'courseSection' => $courseSection->id,
                                                     'sectionContent' => $sectionContent->id,
                                                 ]) }}">
@@ -85,14 +85,14 @@
                             </a>
                             @if (session()->get('completed'))
                                 <a href="{{ route('course.learning-finished', [
-                                    'slug' => $course->slug,
+                                    'course' => $course->slug,
                                 ]) }}"
                                     class="rounded-full border bg-obito-green text-white px-5 py-[10px] hover:drop-shadow-effect transition-all duration-300">
                                     <span class="font-semibold">Completed</span>
                                 </a>
                             @else
                                 <a href="{{ route('course.learning', [
-                                    'slug' => $course->slug,
+                                    'course' => $course->slug,
                                     'courseSection' => $nextSection,
                                     'sectionContent' => $nextContent,
                                 ]) }}"
